@@ -1,6 +1,5 @@
 # Legend of Zelda - Progress Tracker & Gaming Reference
 **Project Proposal**
-![alt text](image.jpg)
 ## OVERVIEW
 
 A Legend of Zelda reference guide which will contain details on every Zelda game with help from a Zelda API - such as items, dungeons, bosses, locations. It will allow users to track their progress in the game they are currently playing, add games to a ‘Want to Play’ wishlist and utilize the YouTube API so that users can find dungeon guides, trivia, or fun fan-theories.
@@ -27,7 +26,7 @@ I will need to create a PostGres database and probably start with the users/logi
 
 ### *Tentative Schema*:
 
-![svg of schema](LoZ_Progress_Trivia.svg)
+![svg of schema](LoZ_Progress_Trivia.jpg)
 
 ### *Potential Issue 1*:
 
