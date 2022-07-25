@@ -16,7 +16,7 @@ Gamers and Fans of the Legend of Zelda - The Zelda Franchise has been around sin
 
 ## DATA
 
-The plan is to use this free Zelda API: https://docs.zelda-a,  in tandem with the YouTube API https://developers.google.com/youtube/v3
+The plan is to use this free Zelda API: https://docs.zelda-api.apius.cc/,  in tandem with the YouTube API https://developers.google.com/youtube/v3
 
 Most of the information will come from the Zelda API and will be used to help formulate searches with the YouTube API
 
