@@ -57,8 +57,8 @@ class Note(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     note = db.Column(db.Text, nullable=False)
-    username = db.Column(db.Text, db.ForeignKey('users.username'))
-    playing_id = db.Column(db.Integer, db.ForeignKey('playing.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    playing_id = db.Column(db.Integer, db.ForeignKey('playing.id'), nullable=False)
     date_time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow()
 )
 
@@ -67,27 +67,52 @@ class Playing(db.Model):
 
     __tablename__ = 'playing'
 
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    ## game id info will come from the Zelda API
+    game_id = db.Column(db.Text, nullable=False)
+    completed = db.Column(db.Boolean, db.ForeignKey('played.completed'))
+    notes = db.relationship('Note')
+
 class Wishlist(db.Model):
     """Games the user wants to play, but is not actively playing"""
 
     __tablename__ = 'wishlists'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, nullable=False)
+    game_id = db.Column(db.Text, nullable=False)
+    completed = db.Column(db.Boolean, db.ForeignKey('played.completed'))
+
 
 class Played(db.Model):
     """Has the user played this game before?"""
 
     __tablename__ = 'played'
 
+    game_id = db.Column(db.Text, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    completed = db.Column(db.Boolean, nullable=False, default=False)
+
 class ItemToFind(db.Model):
     """Items the User Needs to Find or has Found"""
 
     __tablename__ = 'items_to_find'
+
+    playing_id = db.Column(db.Integer, db.ForeignKey('playing.id'),  primary_key=True)
+    ## item id should could come from Zelda API
+    item_id = db.Column(db.Text, nullable=False)
+    found = db.Column(db.Boolean, default=False)
 
 class DungeonToComplete(db.Model):
     """Dungeons the User needs to complete or has completed"""
 
     __tablename__ = 'dungeons_to_complete'
 
-
+    playing_id = db.Column(db.Integer, db.ForeignKey('playing.id'),  primary_key=True)
+    ## dungeon id should could come from Zelda API
+    dungeon_id = db.Column(db.Text, nullable=False)
+    finished = db.Column(db.Boolean, default=False)
 
 
 def connect_db(app):
