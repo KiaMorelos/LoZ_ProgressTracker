@@ -71,7 +71,7 @@ class Playing(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     ## game id info will come from the Zelda API
     game_id = db.Column(db.Text, nullable=False)
-    completed = db.Column(db.Boolean, db.ForeignKey('played.completed'))
+    
     notes = db.relationship('Note')
 
 class Wishlist(db.Model):
@@ -82,7 +82,6 @@ class Wishlist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, nullable=False)
     game_id = db.Column(db.Text, nullable=False)
-    completed = db.Column(db.Boolean, db.ForeignKey('played.completed'))
 
 
 class Played(db.Model):
@@ -90,8 +89,8 @@ class Played(db.Model):
 
     __tablename__ = 'played'
 
-    game_id = db.Column(db.Text, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    game_id = db.Column(db.Text, nullable=False)
     completed = db.Column(db.Boolean, nullable=False, default=False)
 
 class ItemToFind(db.Model):
