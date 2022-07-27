@@ -33,22 +33,48 @@ class User(db.Model):
         unique=True,
     )
 
-    credentials_id = db.Column(
-        db.Integer,
-        nullable=False,
-    )
+    password = db.Column(db.Text, nullable=False)
 
     def __repr__(self):
         return f"<User -- {self.id}: {self.username}, {self.full_name}, {self.email}>"
 
+    @classmethod
+    def signup(cls, full_name, username, email, password):
+        """User Sign Up and Hash Password"""
 
-class Credential(db.Model):
-    """Credentials Model for users"""
+        hashed_pass = bcrypt.generate_password_hash(password).decode('UTF-8')
+
+        user = User(
+            full_name=full_name,
+            username=username,
+            email=email,
+            password=hashed_pass,
+        )
+
+        db.session.add(user)
+        return user
+
+    @classmethod
+    def authenticate(cls, username, password):
+        """Find user with given username and password, otherwise return False."""
+
+        user = cls.query.filter_by(username=username).first()
+
+        if user:
+            authorized = bcrypt.check_password_hash(user.password, password)
+            if authorized:
+                return user
+
+        return False
+
+
+# class Credential(db.Model):
+#     """Credentials Model for users"""
     
-    __tablename__ = 'credentials'
+#     __tablename__ = 'credentials'
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-    password = db.Column(db.Text, nullable=False)
+#     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+#     password = db.Column(db.Text, nullable=False)
 
 class Note(db.Model):
     """Notes model"""
@@ -71,7 +97,7 @@ class Playing(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     ## game id info will come from the Zelda API
     game_id = db.Column(db.Text, nullable=False)
-    
+
     notes = db.relationship('Note')
 
 class Wishlist(db.Model):
