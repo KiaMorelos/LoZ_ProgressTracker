@@ -53,7 +53,9 @@ def logout_user():
 
 @app.route('/')
 def home():
+    """Root Route"""
     return redirect('/games')
+
 @app.route('/games')
 def games_list_view():
     """Home Page - Show list of Games"""
