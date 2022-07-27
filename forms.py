@@ -11,3 +11,9 @@ class SignUpForm(FlaskForm):
     email = EmailField("Email", validators=[InputRequired(message="The email field cannot be empty"), Email()])
     password = PasswordField("Enter a password to use", validators=[Length(min=8)])
 
+class LoginForm(FlaskForm):
+    """Form for signing up a user"""
+
+    username = StringField("username", validators=[InputRequired(message="Please enter a username")])
+    password = PasswordField("Enter your password", validators=[Length(min=8)])
+

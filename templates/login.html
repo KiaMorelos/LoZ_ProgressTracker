@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
-{% block title %}Sign Up{% endblock %}
+{% block title %}Login{% endblock %}
 
 {% block content %}
 
-    <h2>Sign up and keep track of your gaming progress.</h2>
+    <h2>Login</h2>
     <form method="POST">
       {{ form.hidden_tag() }}
 
@@ -14,7 +14,7 @@
         {{ field(placeholder=field.label.text, class="form-control") }}
       {% endfor %}
 
-      <button class="btn btn-primary btn-lg btn-block">Create Account</button>
+      <button class="btn btn-primary btn-lg btn-block">Login</button>
     </form>
   </div>
 </div>

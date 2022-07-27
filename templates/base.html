@@ -15,13 +15,26 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
           <ul class="navbar-nav">
+            {% if not g.user %}
             <li class="nav-item">
-              <a class="nav-link" href="#">Login</a>
+              <a class="nav-link" href="/login">Login</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/signup">Sign Up</a>
+            </li>
+            {% else %}
+            <li>
+              <a class="nav-link" href="/logout">Logout {{g.user.username}}</a>
+            </li>
+            {% endif %}
           </ul>
         </div>
       </nav>
-    <div class="m-5">{% block content %} main content {% endblock%}</div>
+    <div class="m-5">
+      {% for category, message in get_flashed_messages(with_categories=True) %}
+      <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %}
+      {% block content %} main content {% endblock%}</div>
 
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
