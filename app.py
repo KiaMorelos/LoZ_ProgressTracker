@@ -120,12 +120,27 @@ def show_game_details(game_id):
 @login_required
 @app.route('/playing')
 def show_currently_playing_list():
+    """Show Currently Playing Game List"""
+   
+    user_id = current_user.id
+    playing_list = Playing.query.filter_by(user_id=user_id).all()
+   
+    return render_template('games/playing.html', playing_list=playing_list)
 
-    return
+@login_required
+@app.route('/wishlist')
+def show_wishlist():
+    """Show Game Wishlist"""
+
+    user_id = current_user.id
+    wishlist = Wishlist.query.filter_by(user_id=user_id).all()
+
+    return render_template('games/wishlist.html', wishlist=wishlist)
 
 @login_required
 @app.route('/add-to-playing-list', methods=['POST'])
 def add_to_playing_list():
+    """Add game to playing list"""
     
     user_id = current_user.id
     new_game  = Playing(user_id=user_id,
@@ -135,7 +150,7 @@ def add_to_playing_list():
     db.session.add(new_game)
     db.session.commit()
 
-    return render_template('games/playing.html')
+    return redirect('/playing')
 
 @login_required
 @app.route('/add-to-wishlist',  methods=['POST'])
@@ -151,10 +166,3 @@ def add_game_to_wishlist():
     db.session.commit()
 
     return render_template('/games/wishlist.html')
-
-# @login_required
-# @app.route('/wishlist/<int:wishlist_id>')
-# def show_wishlist(wishlist_id):
-#     """Show Game Wishlist"""
-#     wishlist = Wishlist.query.get_or_404(wishlist_id)
-#     return render_template('games/wishlist.html', wishlist=wishlist)

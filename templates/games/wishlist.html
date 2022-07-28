@@ -1,8 +1,16 @@
 {% extends 'base.html' %}
-{% block title %}Login{% endblock %}
+{% block title %}Wishlist{% endblock %}
 
 {% block content %}
 
-    <h2>{{g.user.username}}'s Play Wishlist</h2>
-
+    <h2>{{current_user.username}}'s Play Wishlist</h2>
+    {% if wishlist %}
+    <ul>
+    {% for game in wishlist %}
+    <li><a href="#">{{game.game_title}}</a></li>
+    {% endfor%}
+    {% else %}
+    <li>No games currently in play</li>
+    </ul>
+    {% endif %}
 {% endblock %}
