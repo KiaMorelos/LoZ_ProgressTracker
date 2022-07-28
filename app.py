@@ -137,6 +137,20 @@ def add_to_playing_list():
 
     return render_template('games/playing.html')
 
+@login_required
+@app.route('/add-to-wishlist',  methods=['POST'])
+def add_game_to_wishlist():
+    """Add Game to wishlist"""
+    
+    user_id = current_user.id
+    game_wish = Wishlist(user_id=user_id,
+                    game_id=request.form['game_id'],
+                    game_title=request.form['game_title'])
+
+    db.session.add(game_wish)
+    db.session.commit()
+
+    return render_template('/games/wishlist.html')
 
 # @login_required
 # @app.route('/wishlist/<int:wishlist_id>')
@@ -144,13 +158,3 @@ def add_to_playing_list():
 #     """Show Game Wishlist"""
 #     wishlist = Wishlist.query.get_or_404(wishlist_id)
 #     return render_template('games/wishlist.html', wishlist=wishlist)
-
-# @login_required
-# @app.route('/wishlist/<game_id>',  methods=['GET', 'POST'])
-# def add_game_to_wishlist(game_id):
-#     """Add Game to wishlist"""
-    
-#     user = load_user()
-#     game_wish = Wishlist(user.id, game_id)
-
-#     return redirect('/wishlist')

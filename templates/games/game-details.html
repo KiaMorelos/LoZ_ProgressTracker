@@ -7,7 +7,7 @@
     <p>{{game.description}}</p>
 
     {% if current_user.is_authenticated %}
-    <form>
+    <form method="POST" action="/add-to-wishlist">
     <input type="hidden" id="game_id" name="game_id" value="{{game.id}}"> 
     <input type="hidden" id="game_title" name="game_title" value="{{game.name}}">
     <button class="btn btn-link">Add to Play Wishlist</button>
