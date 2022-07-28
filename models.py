@@ -37,6 +37,9 @@ class User(UserMixin, db.Model):
 
     password = db.Column(db.Text, nullable=False)
 
+    wishlist = db.relationship('Wishlist')
+    playing = db.relationship('Playing')
+
     def __repr__(self):
         return f"<User -- {self.id}: {self.username}, {self.full_name}, {self.email}>"
 
@@ -78,6 +81,19 @@ class User(UserMixin, db.Model):
 #     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
 #     password = db.Column(db.Text, nullable=False)
 
+class Playing(db.Model):
+    """Games the User is currently playing"""
+
+    __tablename__ = 'playing'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    ## game id and title info will come from the Zelda API
+    game_id = db.Column(db.Text, nullable=False)
+    game_title = db.Column(db.Text, nullable=False)
+
+    notes = db.relationship('Note')
+
 class Note(db.Model):
     """Notes model"""
 
@@ -90,27 +106,19 @@ class Note(db.Model):
     date_time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow()
 )
 
-class Playing(db.Model):
-    """Games the User is currently playing"""
-
-    __tablename__ = 'playing'
-
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    ## game id info will come from the Zelda API
-    game_id = db.Column(db.Text, nullable=False)
-
-    notes = db.relationship('Note')
-
 class Wishlist(db.Model):
     """Games the user wants to play, but is not actively playing"""
 
     __tablename__ = 'wishlists'
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    ## game id and title info will come from the Zelda API
     game_id = db.Column(db.Text, nullable=False)
+    game_title = db.Column(db.Text, nullable=False)
 
+
+#### Has played this game before Table? ###
 
 class Played(db.Model):
     """Has the user played this game before?"""
@@ -120,6 +128,8 @@ class Played(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
     game_id = db.Column(db.Text, nullable=False)
     completed = db.Column(db.Boolean, nullable=False, default=False)
+
+###### Items and Dungeon Tables #####
 
 class ItemToFind(db.Model):
     """Items the User Needs to Find or has Found"""

@@ -1,10 +1,11 @@
+from json import load
 import requests
 
 from flask import Flask, session, g, request, redirect, render_template, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from forms import SignUpForm, LoginForm
-from models import db, connect_db, User, Wishlist
+from models import db, connect_db, User, Wishlist, Playing
 
 from decouple import config
 
@@ -32,8 +33,12 @@ login_manager.login_view = 'login'
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    try: 
+        return User.query.get(int(user_id))
+    except:
+        return None
 
+### root routes ###
 @app.route('/')
 def home():
     """Root Route"""
@@ -49,6 +54,7 @@ def games_list_view():
 
     return render_template('index.html', games=games)
 
+### Sign up, login, logout routes ###
 @app.route('/signup', methods=['GET', 'POST'])
 def signup_new_user():
     """Sign Up New User - Page View"""
@@ -99,8 +105,9 @@ def logout():
     flash("You are now logged out", "success")
     return redirect('/login')
 
+### Game Details Route ###
 @app.route('/games/game-details/<game_id>')
-def game_details(game_id):
+def show_game_details(game_id):
     """Show Details About Specific Game From Zelda API"""
 
     resp = requests.get(f"{ZELDA_API_URL}/games/{game_id}")
@@ -111,15 +118,39 @@ def game_details(game_id):
     return render_template("games/game-details.html", game=game)
 
 @login_required
-@app.route('/wishlist')
-def show_wishlist():
-    """Show Game Wishlist"""
-    
-    return render_template('games/wishlist.html')
-
-@login_required
-@app.route('/wishlist/<game_id>',  methods=['GET', 'POST'])
-def add_game_to_wishlist():
-    """Add Game to wishlist"""
+@app.route('/playing')
+def show_currently_playing_list():
 
     return
+
+@login_required
+@app.route('/add-to-playing-list', methods=['POST'])
+def add_to_playing_list():
+    
+    user_id = current_user.id
+    new_game  = Playing(user_id=user_id,
+                    game_id=request.form['game_id'],
+                    game_title=request.form['game_title'])
+
+    db.session.add(new_game)
+    db.session.commit()
+
+    return render_template('games/playing.html')
+
+
+# @login_required
+# @app.route('/wishlist/<int:wishlist_id>')
+# def show_wishlist(wishlist_id):
+#     """Show Game Wishlist"""
+#     wishlist = Wishlist.query.get_or_404(wishlist_id)
+#     return render_template('games/wishlist.html', wishlist=wishlist)
+
+# @login_required
+# @app.route('/wishlist/<game_id>',  methods=['GET', 'POST'])
+# def add_game_to_wishlist(game_id):
+#     """Add Game to wishlist"""
+    
+#     user = load_user()
+#     game_wish = Wishlist(user.id, game_id)
+
+#     return redirect('/wishlist')
