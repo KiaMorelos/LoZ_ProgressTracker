@@ -7,7 +7,7 @@
     {% if wishlist %}
     <ul>
     {% for game in wishlist %}
-    <li><a href="#">{{game.game_title}}</a></li>
+    <li><a href="{{ url_for('show_game_details', game_id=game.game_id)}}">{{game.game_title}}</a></li>
     {% endfor%}
     {% else %}
     <li>No games currently in play</li>
