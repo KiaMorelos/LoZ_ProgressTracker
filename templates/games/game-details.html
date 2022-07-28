@@ -6,7 +6,7 @@
     <h2>{{game.name}}</h2>
     <p>{{game.description}}</p>
 
-    {% if g.user %}
+    {% if current_user.is_authenticated %}
     <a href="#" class="btn btn-link">Add to Play Wishlist</a>
     <a href="#" class="btn btn-secondary">Find a Game Guide</a>
     <a href="#" class="btn btn-success">Start a playthrough notebook</a>

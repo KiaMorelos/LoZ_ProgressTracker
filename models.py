@@ -4,12 +4,14 @@ from datetime import datetime
 
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
+
 
 bcrypt = Bcrypt()
 db = SQLAlchemy()
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     """User Model."""
 
     __tablename__ = 'users'

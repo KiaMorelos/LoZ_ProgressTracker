@@ -2,9 +2,9 @@ import requests
 
 from flask import Flask, session, g, request, redirect, render_template, flash
 from flask_debugtoolbar import DebugToolbarExtension
-
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from forms import SignUpForm, LoginForm
-from models import db, connect_db, User
+from models import db, connect_db, User, Wishlist
 
 from decouple import config
 
@@ -26,30 +26,13 @@ app.config['SQLALCHEMY_ECHO'] = True
 connect_db(app)
 db.create_all()
 
-current_user = "current_user"
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 
-@app.before_request
-def add_user_to_g():
-    """If user is logged in add current user to Flask global object."""
-
-    if current_user in session:
-        g.user = User.query.get(session[current_user])
-
-    else:
-        g.user = None
-
-
-def login_user(user):
-    """Log in a user"""
-
-    session[current_user] = user.id
-
-
-def logout_user():
-    """Logout a user"""
-
-    if current_user in session:
-        del session[current_user]
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 @app.route('/')
 def home():
@@ -108,13 +91,12 @@ def login():
 
     return render_template('login.html', form=form)
 
-
+@login_required
 @app.route('/logout')
 def logout():
     """Logout User"""
-
-    flash("You are now logged out", "success")
     logout_user()
+    flash("You are now logged out", "success")
     return redirect('/login')
 
 @app.route('/games/game-details/<game_id>')
@@ -127,3 +109,17 @@ def game_details(game_id):
     game = game_dict['data']
 
     return render_template("games/game-details.html", game=game)
+
+@login_required
+@app.route('/wishlist')
+def show_wishlist():
+    """Show Game Wishlist"""
+    
+    return render_template('games/wishlist.html')
+
+@login_required
+@app.route('/wishlist/<game_id>',  methods=['GET', 'POST'])
+def add_game_to_wishlist():
+    """Add Game to wishlist"""
+
+    return

@@ -15,7 +15,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
           <ul class="navbar-nav">
-            {% if not g.user %}
+            {% if not current_user.is_authenticated %}
             <li class="nav-item">
               <a class="nav-link" href="/login">Login</a>
             </li>
@@ -24,7 +24,7 @@
             </li>
             {% else %}
             <li>
-              <a class="nav-link" href="/logout">Logout {{g.user.username}}</a>
+              <a class="nav-link" href="/logout">Logout {{current_user.username}}</a>
             </li>
             {% endif %}
           </ul>
