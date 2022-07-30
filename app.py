@@ -97,8 +97,8 @@ def login():
 
     return render_template('login.html', form=form)
 
-@login_required
 @app.route('/logout')
+@login_required
 def logout():
     """Logout User"""
     logout_user()
@@ -117,8 +117,8 @@ def show_game_details(game_id):
 
     return render_template("games/game-details.html", game=game)
 
-@login_required
 @app.route('/playing')
+@login_required
 def show_currently_playing_list():
     """Show Currently Playing Game List"""
    
@@ -127,8 +127,8 @@ def show_currently_playing_list():
    
     return render_template('games/playing.html', playing_list=playing_list)
 
-@login_required
 @app.route('/wishlist')
+@login_required
 def show_wishlist():
     """Show Game Wishlist"""
 
@@ -137,8 +137,8 @@ def show_wishlist():
 
     return render_template('games/wishlist.html', wishlist=wishlist)
 
-@login_required
 @app.route('/add-to-playing-list', methods=['POST'])
+@login_required
 def add_to_playing_list():
     """Add game to playing list"""
     
@@ -152,8 +152,8 @@ def add_to_playing_list():
 
     return redirect('/playing')
 
-@login_required
 @app.route('/add-to-wishlist',  methods=['POST'])
+@login_required
 def add_game_to_wishlist():
     """Add Game to wishlist"""
     
@@ -167,8 +167,8 @@ def add_game_to_wishlist():
 
     return render_template('/games/wishlist.html')
 
-@login_required
 @app.route('/games/playing-journal/<int:playing_id>')
+@login_required
 def show_playing_journal(playing_id):
     """Show Game Journal Notes for Game in progress"""
     
