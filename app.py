@@ -4,7 +4,7 @@ import requests
 from flask import Flask, session, g, request, redirect, render_template, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-from forms import SignUpForm, LoginForm, AddNoteForm
+from forms import SignUpForm, LoginForm, AddNoteForm, HiddenDetailsForm
 from models import db, connect_db, User, Wishlist, Playing, Note
 
 from decouple import config
@@ -112,10 +112,13 @@ def show_game_details(game_id):
 
     resp = requests.get(f"{ZELDA_API_URL}/games/{game_id}")
     game_dict = resp.json()
-    
     game = game_dict['data']
 
-    return render_template("games/game-details.html", game=game)
+    form = HiddenDetailsForm()
+    form.game_id.data = game['id']
+    form.game_title.data = game['name']
+
+    return render_template("games/game-details.html", game=game, form=form)
 
 @app.route('/playing')
 @login_required
@@ -143,9 +146,13 @@ def add_to_playing_list():
     """Add game to playing list"""
     
     user_id = current_user.id
-    new_game  = Playing(user_id=user_id,
-                    game_id=request.form['game_id'],
-                    game_title=request.form['game_title'])
+    
+    form = HiddenDetailsForm()
+
+    if form.validate_on_submit():
+        new_game  = Playing(user_id=user_id,
+                    game_id=form.game_id.data,
+                    game_title=form.game_title.data)
 
     db.session.add(new_game)
     db.session.commit()
@@ -158,14 +165,17 @@ def add_game_to_wishlist():
     """Add Game to wishlist"""
     
     user_id = current_user.id
-    game_wish = Wishlist(user_id=user_id,
-                    game_id=request.form['game_id'],
-                    game_title=request.form['game_title'])
+    form = HiddenDetailsForm()
 
-    db.session.add(game_wish)
-    db.session.commit()
+    if form.validate_on_submit():
+        game_wish = Wishlist(user_id=user_id,
+                    game_id=form.game_id.data,
+                    game_title=form.game_title.data)
 
-    return render_template('/games/wishlist.html')
+        db.session.add(game_wish)
+        db.session.commit()
+
+    return redirect('/wishlist')
 
 @app.route('/games/playing-journal/<int:playing_id>', methods=['GET', 'POST'])
 @login_required

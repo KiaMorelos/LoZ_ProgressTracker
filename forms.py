@@ -1,5 +1,6 @@
 """Forms for Legend of Zelda - Progress Tracker & Gaming Reference App"""
-from wtforms import StringField, EmailField, PasswordField, TextAreaField
+from tokenize import String
+from wtforms import StringField, EmailField, PasswordField, TextAreaField, HiddenField
 from wtforms.validators import InputRequired, Length, Email
 from flask_wtf import FlaskForm
 
@@ -21,5 +22,10 @@ class AddNoteForm(FlaskForm):
     """Add a gaming journal note"""
 
     note = TextAreaField("Add a Note", validators=[InputRequired(message='Note field cannot be blank')])
-    
+
+class HiddenDetailsForm(FlaskForm):
+    """Hidden Form Fields for Game Details page to add games to play or wish list"""
+
+    game_id = HiddenField("game id")
+    game_title = HiddenField("game title")
 
