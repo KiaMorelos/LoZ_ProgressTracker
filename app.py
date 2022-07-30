@@ -166,3 +166,12 @@ def add_game_to_wishlist():
     db.session.commit()
 
     return render_template('/games/wishlist.html')
+
+@login_required
+@app.route('/games/playing-journal/<int:playing_id>')
+def show_playing_journal(playing_id):
+    """Show Game Journal Notes for Game in progress"""
+    
+    game_journal = Playing.query.get_or_404(playing_id)
+
+    return render_template('/games/playing-journal.html', game_journal=game_journal)

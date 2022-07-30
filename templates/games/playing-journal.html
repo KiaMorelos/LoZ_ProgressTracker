@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Play Journal{% endblock %}
+
+{% block content %}
+
+    <h2>Journal for: {{game_journal.game_title}}</h2>
+    {% if game_journal.notes %}
+    {% for n in game_journal.notes %}
+    <p>- {{n.note}}</p>
+    {% endfor %}
+    {% else %}
+    <p>No notes on this game yet!</p>
+    {% endif %}
+{% endblock %}
