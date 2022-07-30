@@ -7,7 +7,7 @@
     {% if playing_list %}
     <ul>
     {% for game in playing_list %}
-    <li>{{game.game_title}} <a href="games/playing-journal/{{game.id}}" class="badge badge-success">Edit Game Journal</a></li>
+    <li>{{game.game_title}} <a href="games/playing/{{game.id}}" class="badge badge-success">Edit Game Journal</a> <a href="games/playing/{{game.id}}/delete" class="text-danger">Delete</a></li>
     {% endfor%}
     {% else %}
     <li>No games currently in play</li>

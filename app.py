@@ -146,7 +146,7 @@ def add_to_playing_list():
     """Add game to playing list"""
     
     user_id = current_user.id
-    
+
     form = HiddenDetailsForm()
 
     if form.validate_on_submit():
@@ -177,7 +177,7 @@ def add_game_to_wishlist():
 
     return redirect('/wishlist')
 
-@app.route('/games/playing-journal/<int:playing_id>', methods=['GET', 'POST'])
+@app.route('/games/playing/<int:playing_id>', methods=['GET', 'POST'])
 @login_required
 def show_playing_journal(playing_id):
     """Show Game Journal Notes for Game in progress"""
@@ -194,6 +194,17 @@ def show_playing_journal(playing_id):
         
         db.session.add(note)
         db.session.commit()
-        redirect(f'/games/playing-journal/{playing_id}')
+        redirect(f'/games/playing/{playing_id}')
 
     return render_template('/games/playing-journal.html', game_journal=game_journal, form=form)
+
+@app.route('/games/playing/<int:playing_id>/delete')
+@login_required
+def delete_game_in_play(playing_id):
+    """Delete Game from Playing List"""
+
+    game_in_play = Playing.query.get_or_404(playing_id)
+    db.session.delete(game_in_play)
+    db.session.commit()
+
+    return redirect('/playing')

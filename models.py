@@ -92,7 +92,7 @@ class Playing(db.Model):
     game_id = db.Column(db.Text, nullable=False)
     game_title = db.Column(db.Text, nullable=False)
 
-    notes = db.relationship('Note')
+    notes = db.relationship('Note', backref="Playing", cascade="all, delete-orphan")
 
 class Note(db.Model):
     """Notes model"""
