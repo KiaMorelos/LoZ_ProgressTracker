@@ -6,7 +6,13 @@
     <h2>Journal for: {{game_journal.game_title}}</h2>
     {% if game_journal.notes %}
     {% for n in game_journal.notes %}
-    <p>- {{n.note}}</p>
+    <p>
+        <form>
+            - {{n.note}}
+        <button formaction="/playing/{{n.playing_id}}/{{n.id}}/edit" class="badge badge-secondary" formmethod="GET">Edit Note</button>
+        <button formaction="/playing/{{n.playing_id}}/{{n.id}}/delete" class="badge badge-danger" formmethod="POST">Delete Note</button>
+        </form> 
+    </p>
     {% endfor %}
     {% else %}
     <p>No notes on this game yet!</p>
@@ -14,11 +20,12 @@
 
     <form method="POST">
         {{ form.hidden_tag() }}
-  
+        
         {% for field in form if field.widget.input_type != 'hidden' %}
           {% for error in field.errors %}
             <span class="text-danger">{{ error }}</span>
           {% endfor %}
+          {{ field.label }}
           {{ field(placeholder=field.label.text, class="form-control") }}
         {% endfor %}
   

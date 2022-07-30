@@ -1,6 +1,7 @@
 """Forms for Legend of Zelda - Progress Tracker & Gaming Reference App"""
 from tokenize import String
-from wtforms import StringField, EmailField, PasswordField, TextAreaField, HiddenField
+from flask import Flask
+from wtforms import StringField, EmailField, PasswordField, TextAreaField, HiddenField, BooleanField
 from wtforms.validators import InputRequired, Length, Email
 from flask_wtf import FlaskForm
 
@@ -18,7 +19,7 @@ class LoginForm(FlaskForm):
     username = StringField("username", validators=[InputRequired(message="Please enter a username")])
     password = PasswordField("Enter your password", validators=[Length(min=8)])
 
-class AddNoteForm(FlaskForm):
+class NoteForm(FlaskForm):
     """Add a gaming journal note"""
 
     note = TextAreaField("Add a Note", validators=[InputRequired(message='Note field cannot be blank')])

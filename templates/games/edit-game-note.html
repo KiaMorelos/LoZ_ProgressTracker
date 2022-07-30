@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Editing a note{% endblock %}
+
+{% block content %}
+<h3>Editing the following note:</h3>
+<p>{{n.note}}</p>
+<form method="POST" action="/playing/{{n.playing_id}}/{{n.id}}/edit">
+    {{ form.hidden_tag() }}
+
+    {% for field in form if field.widget.input_type != 'hidden' %}
+      {% for error in field.errors %}
+        <span class="text-danger">{{ error }}</span>
+      {% endfor %}
+      {{ field.label }}
+      {{ field(placeholder=field.label.text, class="form-control") }}
+    {% endfor %}
+
+    <a href="/playing/{{n.playing_id}}" class="btn btn-outline-secondary">Cancel</a> <button class="btn btn-primary" type="submit">Edit Note</button>
+</form>
+
+{% endblock %}

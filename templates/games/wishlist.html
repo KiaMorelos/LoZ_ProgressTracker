@@ -7,10 +7,15 @@
     {% if wishlist %}
     <ul>
     {% for game in wishlist %}
-    <li><a href="{{ url_for('show_game_details', game_id=game.game_id)}}">{{game.game_title}}</a> <a href="games/wishlist/{{game.id}}/delete" class="text-danger">Delete</a></li>
+    <li>
+        <form>
+            <a href="{{ url_for('show_game_details', game_id=game.game_id)}}">{{game.game_title}}</a>  
+            <button formaction="/wishlist/{{game.id}}/delete" class="badge badge-danger" formmethod="POST">Delete</button>
+        </form>
+    </li>
     {% endfor%}
     {% else %}
-    <li>No games currently in play</li>
+    <li>No games currently on wishlist</li>
     </ul>
     {% endif %}
 {% endblock %}

@@ -1,11 +1,12 @@
 from json import load
+from pydoc import render_doc
 import requests
 
 from flask import Flask, session, g, request, redirect, render_template, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-from forms import SignUpForm, LoginForm, AddNoteForm, HiddenDetailsForm
-from models import db, connect_db, User, Wishlist, Playing, Note
+from forms import SignUpForm, LoginForm, NoteForm, HiddenDetailsForm
+from models import db, connect_db, User, Wishlist, Playing, Note, Played
 
 from decouple import config
 
@@ -177,7 +178,7 @@ def add_game_to_wishlist():
 
     return redirect('/wishlist')
 
-@app.route('/games/playing/<int:playing_id>', methods=['GET', 'POST'])
+@app.route('/playing/<int:playing_id>', methods=['GET', 'POST'])
 @login_required
 def show_playing_journal(playing_id):
     """Show Game Journal Notes for Game in progress"""
@@ -185,7 +186,7 @@ def show_playing_journal(playing_id):
     game_journal = Playing.query.get_or_404(playing_id)
     user_id = current_user.id
 
-    form = AddNoteForm()
+    form = NoteForm()
 
     if form.validate_on_submit():
         note = Note(note=form.note.data,
@@ -194,11 +195,11 @@ def show_playing_journal(playing_id):
         
         db.session.add(note)
         db.session.commit()
-        redirect(f'/games/playing/{playing_id}')
+        redirect(f'/playing/{playing_id}')
 
     return render_template('/games/playing-journal.html', game_journal=game_journal, form=form)
 
-@app.route('/games/playing/<int:playing_id>/delete')
+@app.route('/playing/<int:playing_id>/delete', methods=['POST'])
 @login_required
 def delete_game_in_play(playing_id):
     """Delete Game from Playing List"""
@@ -209,7 +210,36 @@ def delete_game_in_play(playing_id):
 
     return redirect('/playing')
 
-@app.route('/games/wishlist/<int:wishlist_id>/delete')
+@app.route('/playing/<int:playing_id>/<int:note_id>/edit', methods=['GET', 'POST'])
+@login_required
+def update_note(playing_id, note_id):
+    """Edit a Game Note"""
+    
+    n = Note.query.get_or_404(note_id)
+
+    form = NoteForm(obj=n)
+    if form.validate_on_submit():
+        
+        n.note = form.note.data
+        db.session.add(n)
+        db.session.commit()
+
+        return redirect(f'/playing/{playing_id}')
+
+    return render_template('games/edit-game-note.html', n=n, form=form)
+
+@app.route('/playing/<int:playing_id>/<int:note_id>/delete', methods=['POST'])
+@login_required
+def delete_note(playing_id, note_id):
+    """Delete a Game Note"""
+
+    note = Note.query.get_or_404(note_id)
+    db.session.delete(note)
+    db.session.commit()
+
+    return redirect(f'/playing/{playing_id}')
+
+@app.route('/wishlist/<int:wishlist_id>/delete', methods=['POST'])
 @login_required
 def delete_game_wish(wishlist_id):
     """Delete Game from Wishlist"""

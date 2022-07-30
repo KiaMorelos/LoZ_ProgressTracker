@@ -7,7 +7,13 @@
     {% if playing_list %}
     <ul>
     {% for game in playing_list %}
-    <li>{{game.game_title}} <a href="games/playing/{{game.id}}" class="badge badge-success">Edit Game Journal</a> <a href="games/playing/{{game.id}}/delete" class="text-danger">Delete</a></li>
+    <li>
+    <form>
+
+        {{game.game_title}} <button formaction="/playing/{{game.id}}" class="badge badge-secondary" formmethod="GET">Edit Game Journal</button>
+        <button formaction="/playing/{{game.id}}/delete" class="badge badge-danger" formmethod="POST">Delete</button>
+    </form>
+    </li>
     {% endfor%}
     {% else %}
     <li>No games currently in play</li>
