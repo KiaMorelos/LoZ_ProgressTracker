@@ -4,8 +4,8 @@ import requests
 from flask import Flask, session, g, request, redirect, render_template, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-from forms import SignUpForm, LoginForm
-from models import db, connect_db, User, Wishlist, Playing
+from forms import SignUpForm, LoginForm, AddNoteForm
+from models import db, connect_db, User, Wishlist, Playing, Note
 
 from decouple import config
 
@@ -167,11 +167,23 @@ def add_game_to_wishlist():
 
     return render_template('/games/wishlist.html')
 
-@app.route('/games/playing-journal/<int:playing_id>')
+@app.route('/games/playing-journal/<int:playing_id>', methods=['GET', 'POST'])
 @login_required
 def show_playing_journal(playing_id):
     """Show Game Journal Notes for Game in progress"""
     
     game_journal = Playing.query.get_or_404(playing_id)
+    user_id = current_user.id
 
-    return render_template('/games/playing-journal.html', game_journal=game_journal)
+    form = AddNoteForm()
+
+    if form.validate_on_submit():
+        note = Note(note=form.note.data,
+                    user_id=user_id,
+                    playing_id=playing_id,)
+        
+        db.session.add(note)
+        db.session.commit()
+        redirect(f'/games/playing-journal/{playing_id}')
+
+    return render_template('/games/playing-journal.html', game_journal=game_journal, form=form)

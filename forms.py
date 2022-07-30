@@ -1,5 +1,5 @@
 """Forms for Legend of Zelda - Progress Tracker & Gaming Reference App"""
-from wtforms import StringField, EmailField, PasswordField
+from wtforms import StringField, EmailField, PasswordField, TextAreaField
 from wtforms.validators import InputRequired, Length, Email
 from flask_wtf import FlaskForm
 
@@ -16,4 +16,10 @@ class LoginForm(FlaskForm):
 
     username = StringField("username", validators=[InputRequired(message="Please enter a username")])
     password = PasswordField("Enter your password", validators=[Length(min=8)])
+
+class AddNoteForm(FlaskForm):
+    """Add a gaming journal note"""
+
+    note = TextAreaField("Add a Note", validators=[InputRequired(message='Note field cannot be blank')])
+    
 
