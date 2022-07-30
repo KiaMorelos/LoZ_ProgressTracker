@@ -208,3 +208,14 @@ def delete_game_in_play(playing_id):
     db.session.commit()
 
     return redirect('/playing')
+
+@app.route('/games/wishlist/<int:wishlist_id>/delete')
+@login_required
+def delete_game_wish(wishlist_id):
+    """Delete Game from Wishlist"""
+
+    game_wish = Wishlist.query.get_or_404(wishlist_id)
+    db.session.delete(game_wish)
+    db.session.commit()
+
+    return redirect('/wishlist')
