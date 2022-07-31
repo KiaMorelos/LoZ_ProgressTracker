@@ -5,7 +5,7 @@ import requests
 from flask import Flask, session, g, request, redirect, render_template, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-from forms import SignUpForm, LoginForm, NoteForm, HiddenDetailsForm
+from forms import SignUpForm, LoginForm, NoteForm, HiddenDetailsForm, HiddenUrlForm
 from models import db, connect_db, User, Wishlist, Playing, Note, Played
 
 from decouple import config
@@ -131,7 +131,7 @@ def show_currently_playing_list():
     user_id = current_user.id
     playing_list = Playing.query.filter_by(user_id=user_id).all()
    
-    return render_template('games/playing.html', playing_list=playing_list)
+    return render_template('games/in-play/playing.html', playing_list=playing_list)
 
 @app.route('/wishlist')
 @login_required
@@ -199,19 +199,36 @@ def show_playing_journal(playing_id):
         db.session.commit()
         redirect(f'/playing/{playing_id}')
 
-    return render_template('/games/playing-journal.html', game_journal=game_journal, form=form)
+    return render_template('/games/in-play/playing-journal.html', game_journal=game_journal, form=form)
 
-@app.route('/games/find-a-game-guide/<game_title>')
+###Video Content Routes ###
+@app.route('/playing/find-a-game-guide/<int:playing_id>')
 @login_required
-def show_youtube_guides(game_title):
+def show_youtube_guides(playing_id):
     """Show Video Walkthrough Guides for specific game"""
 
+    playing = Playing.query.get_or_404(playing_id)
+    g_title = playing.game_title
 
-    resp = requests.get(f"{YOUTUBE_API_URL}", params={"part": "snippet", "maxResults": 10, "q": f"{game_title} walkthrough", "type" : "video", "videoEmbeddable": "true"})
+    resp = requests.get(f"{YOUTUBE_API_URL}", params={"part": "snippet", "maxResults": 10, "q": f"{g_title} walkthrough", "type" : "video", "videoEmbeddable": "true"})
     guides_raw = resp.json()
 
     guides = guides_raw['items']
-    return render_template('video-content/guides.html', guides=guides, YOUTUBE_EMBED_URL=YOUTUBE_EMBED_URL, game_title=game_title)
+
+    return render_template('video-content/guides.html', guides=guides, YOUTUBE_EMBED_URL=YOUTUBE_EMBED_URL, playing=playing)
+
+@app.route('/add-guide-to-journal/<int:playing_id>', methods=['POST'])
+@login_required
+def add_guide_to_journal(playing_id):
+    """Add a game guide to a corresponding journal"""
+    
+    p = Playing.query.get_or_404(playing_id)
+    
+    p.game_guide = request.form['game_guide']
+    db.session.add(p)
+    db.session.commit()
+
+    return redirect(f'/playing/{playing_id}')
 
 
 ###Delete and Edit Routes for Lists, Gaming Notes
@@ -242,7 +259,7 @@ def update_note(playing_id, note_id):
 
         return redirect(f'/playing/{playing_id}')
 
-    return render_template('games/edit-game-note.html', n=n, form=form)
+    return render_template('games/in-play/edit-game-note.html', n=n, form=form)
 
 @app.route('/playing/<int:playing_id>/<int:note_id>/delete', methods=['POST'])
 @login_required

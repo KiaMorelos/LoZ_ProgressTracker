@@ -30,3 +30,8 @@ class HiddenDetailsForm(FlaskForm):
     game_id = HiddenField("game id")
     game_title = HiddenField("game title")
 
+class HiddenUrlForm(FlaskForm):
+    """Hidden Fields for adding a guide to the journal"""
+
+    game_guide = HiddenField("game guide")
+

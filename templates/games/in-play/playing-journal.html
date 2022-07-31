@@ -4,6 +4,15 @@
 {% block content %}
 
     <h2>Journal for: {{game_journal.game_title}}</h2>
+    <p> 
+    {% if game_journal.game_guide %}
+    <iframe id="ytplayer" type="text/html" width="640" height="360" src="{{game_journal.game_guide}}"></iframe><br>
+    <a href="/playing/find-a-game-guide/{{game_journal.id}}" class="text-secondary">Change Guide</a>
+    {% else %}
+      <a href="/playing/find-a-game-guide/{{game_journal.id}}" class="btn btn-info">Find a YouTube Game Guide to Use</a>
+    {% endif %}
+  </p>
+
     {% if game_journal.notes %}
     {% for n in game_journal.notes %}
     <p>
@@ -17,7 +26,7 @@
     {% else %}
     <p>No notes on this game yet!</p>
     {% endif %}
-
+   
     <form method="POST">
         {{ form.hidden_tag() }}
         

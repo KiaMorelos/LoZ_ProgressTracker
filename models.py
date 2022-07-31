@@ -91,6 +91,7 @@ class Playing(db.Model):
     ## game id and title info will come from the Zelda API
     game_id = db.Column(db.Text, nullable=False)
     game_title = db.Column(db.Text, nullable=False)
+    game_guide = db.Column(db.Text, nullable=True)
 
     notes = db.relationship('Note', backref="Playing", cascade="all, delete-orphan")
 
@@ -119,7 +120,7 @@ class Wishlist(db.Model):
 
 
 #### Has played this game before Table? ###
-
+### this table isn't quite right yet!! ###
 class Played(db.Model):
     """Has the user played this game before?"""
 
