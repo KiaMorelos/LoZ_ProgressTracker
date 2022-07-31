@@ -204,6 +204,7 @@ def show_playing_journal(playing_id):
 ### Category Views - Bosses, Dungeons, Items, Places ###
 
 @app.route('/games/<category>/<int:page_num>')
+@login_required
 def show_category_list(category, page_num):
     """Show General List of Chosen Category"""
 
@@ -211,6 +212,18 @@ def show_category_list(category, page_num):
     cat_data = resp.json()
 
     return render_template('games/categories/category.html', category=category, cat_data=cat_data)
+
+@app.route('/games/<category>/details/<item_id>')
+@login_required
+def show_item_details(category, item_id):
+    """Show details for chosen item in category list"""
+    
+    resp = requests.get(f"{ZELDA_API_URL}/{category}/{item_id}")
+    r = resp.json()
+    item = r['data']
+
+    return render_template('games/categories/details.html', item=item)
+
 
 ###Video Content Routes ###
 @app.route('/playing/find-a-game-guide/<int:playing_id>')
