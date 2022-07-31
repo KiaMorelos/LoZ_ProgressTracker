@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Legend of Zelda - Progress Tracker & Gaming Reference{% endblock %}
+
+{% block content %}
+<h1>{{category.capitalize()}} List</h1>
+<div class="row">
+{% for c in cat_data.data %}
+<div class="card" style="width: 18rem;margin:1%">
+    <img src="https://dummyimage.com/640x360/eee/aaa" class="card-img-top" alt="Artwork TBD">
+    <div class="card-body">
+      <h5 class="card-title">{{c.name}}</h5>
+      <p class="card-text">{{c.description}}</p>
+      <a href="#" class="btn btn-primary">View Details</a>
+    </div>
+  </div>
+{% endfor %}
+</div>
+{% endblock %}

@@ -23,12 +23,28 @@
               <a class="nav-link" href="/signup">Sign Up</a>
             </li>
             {% else %}
-            <li>
-              <a class="nav-link" href="/playing">Playing Now List</a>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                My Lists
+              </a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="/playing">Playing Now List</a>
+                <a class="dropdown-item" href="/wishlist">Play Wishlist</a>
+    
+              </div>
             </li>
-            <li>
-              <a class="nav-link" href="/wishlist">Play Wishlist</a>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                Find Guides or Details about...
+              </a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="{{ url_for('show_category_list', category='bosses', page_num='1')}}">Bosses</a>
+                <a class="dropdown-item" href="{{ url_for('show_category_list', category='dungeons', page_num='1')}}">Dungeons</a>
+                <a class="dropdown-item" href="{{ url_for('show_category_list', category='items', page_num='1')}}">Items</a>
+                <a class="dropdown-item" href="{{ url_for('show_category_list', category='places', page_num='1')}}">Places</a>
+              </div>
             </li>
+      
             <li>
               <a class="nav-link" href="/logout">Logout {{current_user.username}}</a>
             </li>
