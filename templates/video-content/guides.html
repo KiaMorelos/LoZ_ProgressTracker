@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Wishlist{% endblock %}
+
+{% block content %}
+
+    <h2>{{game_title}} Guides from YouTube</h2>
+    {% for i in guides %}
+    
+        <iframe id="ytplayer" type="text/html" width="640" height="360" src="{{YOUTUBE_EMBED_URL}}/{{i.id.videoId}}"></iframe>
+    <p> {{i.snippet.title}}</p>
+     
+    {% endfor %}
+{% endblock %}

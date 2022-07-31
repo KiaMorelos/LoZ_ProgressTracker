@@ -19,7 +19,7 @@
     <button class="btn btn-link">Add to Play Wishlist</button>
     </form>
 
-    <a href="#" class="btn btn-secondary">Find a Game Guide</a>
+    <a href="/games/find-a-game-guide/{{game.name}}" class="btn btn-secondary">Find a Game Guide</a>
     
     <form method="POST" action="/add-to-playing-list">
         {{ form.hidden_tag() }}

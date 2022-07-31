@@ -17,6 +17,8 @@ YOUTUBE_API_URL = f"https://www.googleapis.com/youtube/v3/search?key={YOUTUBE_AP
 
 ZELDA_API_URL = "https://zelda.fanapis.com/api"
 
+YOUTUBE_EMBED_URL = "https://www.youtube.com/embed/"
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = f"{APP_SECRET_KEY}"
 debug = DebugToolbarExtension(app)
@@ -106,7 +108,7 @@ def logout():
     flash("You are now logged out", "success")
     return redirect('/login')
 
-### Game Details Route ###
+### Game Details, Wishlists, Play Lists, and Playing Routes ###
 @app.route('/games/game-details/<game_id>')
 def show_game_details(game_id):
     """Show Details About Specific Game From Zelda API"""
@@ -181,7 +183,7 @@ def add_game_to_wishlist():
 @app.route('/playing/<int:playing_id>', methods=['GET', 'POST'])
 @login_required
 def show_playing_journal(playing_id):
-    """Show Game Journal Notes for Game in progress"""
+    """Show Game Journal Notes for Game in progress, and allow for new notes to be added"""
     
     game_journal = Playing.query.get_or_404(playing_id)
     user_id = current_user.id
@@ -199,6 +201,20 @@ def show_playing_journal(playing_id):
 
     return render_template('/games/playing-journal.html', game_journal=game_journal, form=form)
 
+@app.route('/games/find-a-game-guide/<game_title>')
+@login_required
+def show_youtube_guides(game_title):
+    """Show Video Walkthrough Guides for specific game"""
+
+
+    resp = requests.get(f"{YOUTUBE_API_URL}", params={"part": "snippet", "maxResults": 10, "q": f"{game_title} walkthrough", "type" : "video", "videoEmbeddable": "true"})
+    guides_raw = resp.json()
+
+    guides = guides_raw['items']
+    return render_template('video-content/guides.html', guides=guides, YOUTUBE_EMBED_URL=YOUTUBE_EMBED_URL, game_title=game_title)
+
+
+###Delete and Edit Routes for Lists, Gaming Notes
 @app.route('/playing/<int:playing_id>/delete', methods=['POST'])
 @login_required
 def delete_game_in_play(playing_id):
