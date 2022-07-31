@@ -254,6 +254,17 @@ def add_guide_to_journal(playing_id):
 
     return redirect(f'/playing/{playing_id}')
 
+@app.route('/games/find-a-game-theory/<item_name>')
+@login_required
+def find_game_theory(item_name):
+    """Try to find a game theory about a game, boss, item, dungeon or place"""
+
+    resp = requests.get(f"{YOUTUBE_API_URL}", params={"part": "snippet", "maxResults": 10, "q": f"{item_name} zelda theory", "type" : "video", "videoEmbeddable": "true"})
+    theories_raw = resp.json()
+
+    theories = theories_raw['items']
+
+    return render_template('video-content/theory-videos.html', theories=theories, item_name=item_name)
 
 ###Delete and Edit Routes for Lists, Gaming Notes
 @app.route('/playing/<int:playing_id>/delete', methods=['POST'])
