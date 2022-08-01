@@ -1,9 +1,13 @@
 {% extends 'base.html' %}
-{% block title %}{{item.name}} Details{% endblock %}
+{% block title %}Details{% endblock %}
 
 {% block content %}
+{% if not error %}
    <h1>{{item.name}}</h1>
    <p>{{item.description}}</p>
    <a href="" class="btn btn-info">Find a Guide -  {{item.name}}</a>
    <a href="{{url_for('find_game_theory', item_name=item.name)}}" class="btn btn-dark">Find a Game Theory Video About -  {{item.name}}</a>
+{% else %}
+<p>{{error}}</p>
+{% endif %}
 {% endblock %}

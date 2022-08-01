@@ -3,15 +3,23 @@
 
 {% block content %}
 
-    <h2>{{playing.game_title}} Guides from YouTube</h2>
+   
+    {% if not error %}
     {% for i in guides %}
+    <h2>{{playing.game_title}} Guides from YouTube</h2>
         <iframe id="ytplayer" type="text/html" width="640" height="360" src="{{YOUTUBE_EMBED_URL}}{{i.id.videoId}}"></iframe>
-    <p> {{i.snippet.title}} <br> 
+    <p> {{i.snippet.title}} </p>
         <form  action="/add-guide-to-journal/{{playing.id}}" method="POST">
         <input type="hidden" id="game_guide" name="game_guide" value="{{YOUTUBE_EMBED_URL}}{{i.id.videoId}}" />    
         <button class="btn btn-info">Add guide to Journal</button>
         </form>
-    </p>
-    <hr>
+        <hr>
     {% endfor %}
+    {% else %}
+    <p>{{error}}</p>
+    <a href="/playing">Go to Playing Now List >></a>
+    <br>
+    <a href="/games">Go to Games List >></a>
+    <hr>
+    {% endif %}
 {% endblock %}

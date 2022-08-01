@@ -2,6 +2,8 @@
 {% block title %}Game Details{% endblock %}
 
 {% block content %}
+
+  {% if not error %}
     <small>Release{{game.released_date}}</small>
     <h2>{{game.name}}</h2>
     <p>{{game.description}}</p>
@@ -30,6 +32,9 @@
         {% endfor %}
         <button class="btn btn-success">Add to playing list</button>
     </form>
+    {% endif %}
+    {% else %}
+    <p>{{error}}</p>
     {% endif %}
 
 {% endblock %}

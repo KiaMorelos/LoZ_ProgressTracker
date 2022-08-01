@@ -51,9 +51,16 @@ def home():
 def games_list_view():
     """Home Page - Show list of Games"""
 
-    resp = requests.get(f"{ZELDA_API_URL}/games", params={"limit": 50})
+    try:
+        resp = requests.get(f"{ZELDA_API_URL}/games", params={"limit": 50})
 
-    games = resp.json()
+        games = resp.json()
+    
+    except:
+        error = "No results found"
+        flash('I AM ERROR. - Sorry something went wrong while retrieving the games list. Please try again later.', 'warning')
+        return render_template('index.html', error=error)
+
 
     return render_template('index.html', games=games)
 
@@ -113,13 +120,18 @@ def logout():
 def show_game_details(game_id):
     """Show Details About Specific Game From Zelda API"""
 
-    resp = requests.get(f"{ZELDA_API_URL}/games/{game_id}")
-    game_dict = resp.json()
-    game = game_dict['data']
+    try:
+        resp = requests.get(f"{ZELDA_API_URL}/games/{game_id}")
+        game_dict = resp.json()
+        game = game_dict['data']
 
-    form = HiddenDetailsForm()
-    form.game_id.data = game['id']
-    form.game_title.data = game['name']
+        form = HiddenDetailsForm()
+        form.game_id.data = game['id']
+        form.game_title.data = game['name']
+    except:
+        error = "No results found"
+        flash('I AM ERROR. - Sorry something went wrong while retrieving the details for that. Please try again later', 'warning')
+        return render_template("games/game-details.html", error=error)
 
     return render_template("games/game-details.html", game=game, form=form)
 
@@ -208,19 +220,34 @@ def show_playing_journal(playing_id):
 def show_category_list(category, page_num):
     """Show General List of Chosen Category"""
 
-    resp = requests.get(f"{ZELDA_API_URL}/{category}", params={"limit": 50, "page": page_num})
-    cat_data = resp.json()
+    try:
+        resp = requests.get(f"{ZELDA_API_URL}/{category}", params={"limit": 50, "page": page_num, })
+        cat_data = resp.json()
+    
+    except:
+        error = "No results found"
+        flash(f'I AM ERROR. - Sorry something went wrong while retrieving a list for {category}. Please try again later', 'warning')
+        return render_template('games/categories/category.html', error=error)
 
     return render_template('games/categories/category.html', category=category, cat_data=cat_data)
+
 
 @app.route('/games/<category>/details/<item_id>')
 @login_required
 def show_item_details(category, item_id):
     """Show details for chosen item in category list"""
     
-    resp = requests.get(f"{ZELDA_API_URL}/{category}/{item_id}")
-    r = resp.json()
-    item = r['data']
+    try:
+        resp = requests.get(f"{ZELDA_API_URL}/{category}/{item_id}")
+        r = resp.json()
+        item = r['data']
+
+    except:
+        error = "No results found"
+        flash(f'I AM ERROR. - Sorry something went wrong while retrieving the details for that. Please try again later', 'warning')
+        
+        return render_template('games/categories/details.html', error=error)
+    
 
     return render_template('games/categories/details.html', item=item)
 
@@ -234,10 +261,20 @@ def show_youtube_guides(playing_id):
     playing = Playing.query.get_or_404(playing_id)
     g_title = playing.game_title
 
-    resp = requests.get(f"{YOUTUBE_API_URL}", params={"part": "snippet", "maxResults": 10, "q": f"{g_title} walkthrough", "type" : "video", "videoEmbeddable": "true"})
-    guides_raw = resp.json()
+    try:
+        resp = requests.get(f"{YOUTUBE_API_URL}", params={"part": "snippet", "maxResults": 10, "q": f"{g_title} walkthrough", "type" : "video", "videoEmbeddable": "true"})
+        guides_raw = resp.json()
 
-    guides = guides_raw['items']
+        guides = guides_raw['items']
+    
+    except:
+
+        error = "Couldn't retrieve video results from YouTube. Please try again later. You can still add and update your gaming journals, but may not be able to add or switch guides for the journals at this time."
+
+        flash('I AM ERROR. - Sorry! It looks like something may have went wrong with our YouTube connection', 'warning')
+
+        return render_template('video-content/guides.html', error=error)
+
 
     return render_template('video-content/guides.html', guides=guides, YOUTUBE_EMBED_URL=YOUTUBE_EMBED_URL, playing=playing)
 
@@ -259,12 +296,22 @@ def add_guide_to_journal(playing_id):
 def find_game_theory(item_name):
     """Try to find a game theory about a game, boss, item, dungeon or place"""
 
-    resp = requests.get(f"{YOUTUBE_API_URL}", params={"part": "snippet", "maxResults": 10, "q": f"{item_name} zelda theory", "type" : "video", "videoEmbeddable": "true"})
-    theories_raw = resp.json()
+    try:
+        resp = requests.get(f"{YOUTUBE_API_URL}", params={"part": "snippet", "maxResults": 10, "q": f"{item_name} zelda theory", "type" : "video", "videoEmbeddable": "true"})
+        theories_raw = resp.json()
 
-    theories = theories_raw['items']
+        theories = theories_raw['items']
+
+
+    except:
+        error = "Couldn't retrieve video results from YouTube. Please try again later. You can still add and update your gaming journals, but may not be able to add or switch guides for the journals at this time or view game theory videos."
+
+        flash('I AM ERROR. - Sorry! It looks like something may have went wrong with our YouTube connection', 'warning')
+
+        return render_template('video-content/theory-videos.html', error=error)
 
     return render_template('video-content/theory-videos.html', theories=theories, item_name=item_name)
+
 
 ###Delete and Edit Routes for Lists, Gaming Notes
 @app.route('/playing/<int:playing_id>/delete', methods=['POST'])

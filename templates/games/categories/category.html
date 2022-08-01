@@ -3,6 +3,7 @@
 {% block title %}Legend of Zelda - Progress Tracker & Gaming Reference{% endblock %}
 
 {% block content %}
+{% if not error %}
 <h1>{{category.capitalize()}} List</h1>
 <div class="row">
 {% for c in cat_data.data %}
@@ -16,4 +17,7 @@
   </div>
 {% endfor %}
 </div>
+{% else %}
+<p>{{error}}</p>
+{% endif %}
 {% endblock %}
