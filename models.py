@@ -92,6 +92,7 @@ class Playing(db.Model):
     game_id = db.Column(db.Text, nullable=False)
     game_title = db.Column(db.Text, nullable=False)
     game_guide = db.Column(db.Text, nullable=True)
+    # completed = db.Column(db.Boolean, nullable=False, default=False)
 
     notes = db.relationship('Note', backref="Playing", cascade="all, delete-orphan")
 
@@ -121,14 +122,14 @@ class Wishlist(db.Model):
 
 #### Has played this game before Table? ###
 ### this table isn't quite right yet!! ###
-class Played(db.Model):
-    """Has the user played this game before?"""
+# class Played(db.Model):
+#     """Has the user played this game before?"""
 
-    __tablename__ = 'played'
+#     __tablename__ = 'played'
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-    game_id = db.Column(db.Text, nullable=False)
-    completed = db.Column(db.Boolean, nullable=False, default=False)
+#     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+#     game_id = db.Column(db.Text, nullable=False)
+#     completed = db.Column(db.Boolean, nullable=False, default=False)
 
 ###### Items and Dungeon Tables #####
 

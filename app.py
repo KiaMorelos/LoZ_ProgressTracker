@@ -6,7 +6,7 @@ from flask import Flask, session, g, request, redirect, render_template, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from forms import SignUpForm, LoginForm, NoteForm, HiddenDetailsForm, HiddenUrlForm
-from models import db, connect_db, User, Wishlist, Playing, Note, Played
+from models import db, connect_db, User, Wishlist, Playing, Note
 
 from decouple import config
 
@@ -310,7 +310,7 @@ def find_game_theory(item_name):
 
         return render_template('video-content/theory-videos.html', error=error)
 
-    return render_template('video-content/theory-videos.html', theories=theories, item_name=item_name)
+    return render_template('video-content/theory-videos.html', theories=theories, YOUTUBE_EMBED_URL=YOUTUBE_EMBED_URL, item_name=item_name)
 
 
 ###Delete and Edit Routes for Lists, Gaming Notes
