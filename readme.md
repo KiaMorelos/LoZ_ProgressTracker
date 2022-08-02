@@ -3,7 +3,7 @@
 ## Schema
 - A new schema diagram is coming soon.
 
-## Featurs I still need to add:
+## Features I still need to add:
 
 - Pagination
 - A way to mark games as played
