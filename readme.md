@@ -1,7 +1,14 @@
 # Legend of Zelda - Progress Tracker & Gaming Reference
 
 ## Schema
-![svg of schema](LoZ_Progress_Trivia.jpg)
+- A new schema diagram is coming soon.
+
+## Featurs I still need to add:
+
+- Pagination
+- A way to mark games as played
+- Tests
+- Improved Styles
 
 ## API's
 
