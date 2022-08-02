@@ -4,6 +4,15 @@
 
 {% block content %}
 {% if not error %}
+<form action="/search/{{category}}">
+<div class="input-group mb-3">
+    <input type="text" name="q" class="form-control" placeholder="Search {{category.capitalize()}} List" aria-label="{{category.capitalize()}} List" aria-describedby="basic-addon2">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="submit">Go</button>
+    </div>
+  </div>
+</form>
+
 <h1>{{category.capitalize()}} List</h1>
 <div class="row">
 {% for c in cat_data.data %}

@@ -215,19 +215,41 @@ def show_playing_journal(playing_id):
 
 ### Category Views - Bosses, Dungeons, Items, Places ###
 
-@app.route('/games/<category>/<int:page_num>')
+@app.route('/games/<category>')
 @login_required
-def show_category_list(category, page_num):
+def show_category_list(category):
     """Show General List of Chosen Category"""
 
     try:
-        resp = requests.get(f"{ZELDA_API_URL}/{category}", params={"limit": 50, "page": page_num, })
+        resp = requests.get(f"{ZELDA_API_URL}/{category}", params={"limit": 50 })
         cat_data = resp.json()
     
     except:
         error = "No results found"
         flash(f'I AM ERROR. - Sorry something went wrong while retrieving a list for {category}. Please try again later', 'warning')
         return render_template('games/categories/category.html', error=error)
+
+    return render_template('games/categories/category.html', category=category, cat_data=cat_data)
+
+@app.route('/search/<category>')
+@login_required
+def search_category_list(category):
+    """Search for something in a category general list - bosses, dungeons, items, places"""
+
+    search = request.args.get('q')
+
+    
+    try:
+        resp = requests.get(f"{ZELDA_API_URL}/{category}", params={"limit": 50, "name": f"{search.title()}" })
+        
+        cat_data = resp.json()
+
+    except:
+        
+        error = "No results found"
+        flash(f'I AM ERROR. - Sorry something went wrong while retrieving a search for {search}. Please try again later', 'warning')
+        return redirect(f'/games/{category}', error=error)
+
 
     return render_template('games/categories/category.html', category=category, cat_data=cat_data)
 
