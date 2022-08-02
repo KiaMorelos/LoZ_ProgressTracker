@@ -8,10 +8,27 @@
     {% for g in guides %}
         <iframe id="ytplayer" type="text/html" width="640" height="360" src="{{YOUTUBE_EMBED_URL}}{{g.id.videoId}}"></iframe>
     <h6>{{g.snippet.title}}</h6>
-    <button class="btn btn-info">Select a game journal to add this guide to</button>
+    {% if current_user.is_authenticated and current_user.playing %}
+        
+    <button id="add-guide-toggle" class="btn btn-info">Add this guide to a gaming journal    
+    </button>
+    <form id="select-j-form">
+        <input type="hidden" id="game_guide" name="game_guide" value="{{YOUTUBE_EMBED_URL}}{{g.id.videoId}}" />
+        <div id="temp-hidden" class="hide">
+        <select id="select-journal">
+        </select>
+        <div>
+            <small>Note: This action will replace any existing video guide in the journal</small>
+        </div>
+    <button type="submit" class="btn btn-info">Add</button>
+    </div>
+    </form>
+       
+    {% endif %}
     <hr>
     {% endfor %}
     {% else %}
+
     <p>{{error}}</p>
     <hr>
     {% endif %}

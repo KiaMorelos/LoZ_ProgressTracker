@@ -2,7 +2,7 @@ from json import load
 from pydoc import render_doc
 import requests
 
-from flask import Flask, session, g, request, redirect, render_template, flash
+from flask import Flask, jsonify, session, g, request, redirect, render_template, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from forms import SignUpForm, LoginForm, NoteForm, HiddenDetailsForm, HiddenUrlForm
@@ -409,3 +409,28 @@ def delete_game_wish(wishlist_id):
     db.session.commit()
 
     return redirect('/wishlist')
+
+
+#### Utitlity Function and Route ###
+def serialize(playing):
+    """Serialize a playing SQLAlchemy obj to dictionary."""
+    
+    return {
+        "id": playing.id,
+        "user_id": playing.user_id,
+        "game_id": playing.game_id,
+        "game_title": playing.game_title,
+        "game_guide": playing.game_guide,
+        }
+
+@app.route('/api/playing')
+@login_required
+def get_currently_playing_list():
+    """Get JSONIFIED playing list"""
+
+    user_id = current_user.id
+    playing_list = Playing.query.filter_by(user_id=user_id).all()
+
+    serialized = [serialize(playing) for playing in playing_list]
+
+    return jsonify(serialized)
