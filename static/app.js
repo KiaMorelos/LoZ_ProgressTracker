@@ -19,12 +19,4 @@ for(let game of games){
 }
 
 
-async function updateGameJournal(){
-    const journalId = $("#select-journal").val();
-    const res = await axios.post(`/add-guide-to-journal/${journalId}`)
-}
-
-
-
 $addGuide.on('click', findGamesInPlay)
-$guideForm.on('submit', updateGameJournal)

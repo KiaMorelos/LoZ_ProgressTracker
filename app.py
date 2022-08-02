@@ -323,11 +323,11 @@ def show_youtube_guide_misc(item_name):
     return render_template('video-content/misc-guides.html', guides=guides, YOUTUBE_EMBED_URL=YOUTUBE_EMBED_URL, item_name=item_name)
 
 
-@app.route('/add-guide-to-journal/<int:playing_id>', methods=['POST'])
-@login_required
-def add_guide_to_journal(playing_id):
+@app.route('/add-guide-to-journal', methods=['POST'])
+@login_required 
+def add_guide_to_journal():
     """Add a game guide to a corresponding journal"""
-    
+    playing_id = request.form['playing_id']
     p = Playing.query.get_or_404(playing_id)
     
     p.game_guide = request.form['game_guide']

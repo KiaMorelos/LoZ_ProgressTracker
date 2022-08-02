@@ -12,10 +12,10 @@
         
     <button id="add-guide-toggle" class="btn btn-info">Add this guide to a gaming journal    
     </button>
-    <form id="select-j-form">
+    <form id="select-j-form" action="/add-guide-to-journal" method="POST">
         <input type="hidden" id="game_guide" name="game_guide" value="{{YOUTUBE_EMBED_URL}}{{g.id.videoId}}" />
         <div id="temp-hidden" class="hide">
-        <select id="select-journal">
+        <select id="select-journal" name="playing_id">
         </select>
         <div>
             <small>Note: This action will replace any existing video guide in the journal</small>
