@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Guide to {{item_name}} {% endblock %}
+
+{% block content %}
+
+    {% if not error %}
+    <h2>Guides for {{item_name}} from YouTube</h2>
+    {% for g in guides %}
+        <iframe id="ytplayer" type="text/html" width="640" height="360" src="{{YOUTUBE_EMBED_URL}}{{g.id.videoId}}"></iframe>
+    <h6>{{g.snippet.title}}</h6>
+    <button class="btn btn-info">Select a game journal to add this guide to</button>
+    <hr>
+    {% endfor %}
+    {% else %}
+    <p>{{error}}</p>
+    <hr>
+    {% endif %}
+{% endblock %} 

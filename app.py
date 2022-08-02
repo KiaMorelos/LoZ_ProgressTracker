@@ -255,7 +255,7 @@ def show_item_details(category, item_id):
 ###Video Content Routes ###
 @app.route('/playing/find-a-game-guide/<int:playing_id>')
 @login_required
-def show_youtube_guides(playing_id):
+def show_youtube_game_guides(playing_id):
     """Show Video Walkthrough Guides for specific game"""
 
     playing = Playing.query.get_or_404(playing_id)
@@ -277,6 +277,29 @@ def show_youtube_guides(playing_id):
 
 
     return render_template('video-content/guides.html', guides=guides, YOUTUBE_EMBED_URL=YOUTUBE_EMBED_URL, playing=playing)
+
+@app.route('/find-guide-to/<item_name>')
+@login_required
+def show_youtube_guide_misc(item_name):
+    """Show guides for a chosen item - bosses, dungeons, items, places"""
+
+    try:
+
+        resp = requests.get(f"{YOUTUBE_API_URL}", params={"part": "snippet", "maxResults": 10, "q": f"{item_name} walkthrough", "type" : "video", "videoEmbeddable": "true"})
+        guides_raw = resp.json()
+
+        guides = guides_raw['items']
+
+    except:
+
+        error = "Couldn't retrieve video results from YouTube. Please try again later. You can still add and update your gaming journals, but may not be able to add or switch guides for the journals at this time."
+
+        flash('I AM ERROR. - Sorry! It looks like something may have went wrong with our YouTube connection', 'warning')
+
+        return render_template('video-content/misc-guides.html', error=error)
+
+    return render_template('video-content/misc-guides.html', guides=guides, YOUTUBE_EMBED_URL=YOUTUBE_EMBED_URL, item_name=item_name)
+
 
 @app.route('/add-guide-to-journal/<int:playing_id>', methods=['POST'])
 @login_required

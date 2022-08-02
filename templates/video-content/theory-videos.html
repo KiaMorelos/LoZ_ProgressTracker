@@ -7,7 +7,7 @@
     <h2>Theories about {{item_name}} from YouTube</h2>
     {% for t in theories %}
         <iframe id="ytplayer" type="text/html" width="640" height="360" src="{{YOUTUBE_EMBED_URL}}{{t.id.videoId}}"></iframe>
-    <p> {{t.snippet.title}}</p>
+    <h6> {{t.snippet.title}}</h6>
     <hr>
     {% endfor %}
     {% else %}

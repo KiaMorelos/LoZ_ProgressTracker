@@ -8,7 +8,7 @@
     {% for i in guides %}
     <h2>{{playing.game_title}} Guides from YouTube</h2>
         <iframe id="ytplayer" type="text/html" width="640" height="360" src="{{YOUTUBE_EMBED_URL}}{{i.id.videoId}}"></iframe>
-    <p> {{i.snippet.title}} </p>
+    <h6> {{i.snippet.title}} </h6>
         <form  action="/add-guide-to-journal/{{playing.id}}" method="POST">
         <input type="hidden" id="game_guide" name="game_guide" value="{{YOUTUBE_EMBED_URL}}{{i.id.videoId}}" />    
         <button class="btn btn-info">Add guide to Journal</button>
