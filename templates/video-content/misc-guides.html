@@ -2,7 +2,7 @@
 {% block title %}Guide to {{item_name}} {% endblock %}
 
 {% block content %}
-
+<div id="misc-guides">
     {% if not error %}
     <h2>Guides for {{item_name}} from YouTube</h2>
     {% for g in guides %}
@@ -10,15 +10,16 @@
     <h6>{{g.snippet.title}}</h6>
     {% if current_user.is_authenticated and current_user.playing %}
         
-    <button id="add-guide-toggle" class="btn btn-info">Add this guide to a gaming journal    
+    <button class="btn btn-outline-info add-guide-toggle">Add this guide to a gaming journal    
     </button>
-    <form id="select-j-form" action="/add-guide-to-journal" method="POST">
-        <input type="hidden" id="game_guide" name="game_guide" value="{{YOUTUBE_EMBED_URL}}{{g.id.videoId}}" />
-        <div id="temp-hidden" class="hide">
-        <select id="select-journal" name="playing_id">
+    <div class="mt-2">
+    <form class="select-j-form" action="/add-guide-to-journal" method="POST" class="mt-4">
+        <input type="hidden" name="game_guide" value="{{YOUTUBE_EMBED_URL}}{{g.id.videoId}}" />
+        <div class="temp-hidden hide">
+        <select name="playing_id" class="form-control guide-select">
         </select>
         <div>
-            <small>Note: This action will replace any existing video guide in the journal</small>
+            <small>Note: This action will replace any existing guide in the journal</small>
         </div>
     <button type="submit" class="btn btn-info">Add</button>
     </div>
@@ -28,8 +29,9 @@
     <hr>
     {% endfor %}
     {% else %}
-
+    </div>
     <p>{{error}}</p>
     <hr>
     {% endif %}
+</div>
 {% endblock %} 

@@ -8,6 +8,8 @@
     <h2>{{game.name}}</h2>
     <p>{{game.description}}</p>
 
+    <div class="btn-group" role="group">
+
     {% if current_user.is_authenticated %}
     <form method="POST" action="/add-to-wishlist">
         {{ form.hidden_tag() }}
@@ -33,6 +35,8 @@
         <button class="btn btn-success">Add to playing list</button>
     </form>
     <a href="{{url_for('find_game_theory', item_name=game.name)}}" class="btn btn-dark">Find a Game Theory Video About -  {{game.name}}</a>
+         
+  </div>
     {% endif %}
     {% else %}
     <p>{{error}}</p>

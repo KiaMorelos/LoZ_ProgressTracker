@@ -4,7 +4,6 @@
 {% block content %}
 
     <h2>Journal for: {{game_journal.game_title}}</h2>
-    <p> 
     {% if game_journal.game_guide %}
       {% if "youtube.com" in game_journal.game_guide %}
       <iframe id="ytplayer" type="text/html" width="640" height="360" src="{{game_journal.game_guide}}"></iframe>
@@ -12,12 +11,13 @@
       <a href="{{game_journal.game_guide}}">{{game_journal.game_guide}}</a>
       {% endif %}
       <br>
-      <a href="/playing/find-a-game-guide/{{game_journal.id}}" class="text-secondary">Switch to New Video Guide</a>
+      <a href="/playing/find-a-game-guide/{{game_journal.id}}" class="btn btn-outline-info">Switch to New Video Guide</a>
     {% else %}
       <a href="/playing/find-a-game-guide/{{game_journal.id}}" class="btn btn-info">Find a YouTube Game Guide to Use</a>
     {% endif %}
-  </p>
-    <button class="btn btn-outline-secondary" id="toggle-add-url">I want to bookmark a new text based guide</button>
+
+    <button class="btn btn-outline-secondary" id="toggle-add-url-on">I want to bookmark a new text based guide</button>
+    <div class="mt-4">
       <form method="POST" action="/add-guide-to-journal" class="hide" id="add-text-guide">
         {{ guide_form.csrf_token() }}
         {{ guide_form.playing_id(value=game_journal.id) }}
@@ -25,37 +25,52 @@
           {% for error in field.errors %}
             <span class="text-danger">{{ error }}</span>
           {% endfor %}
-          {{ field(placeholder=field.label.text, class="form-control") }}
-        {% endfor %}
-  
-        <button class="btn btn-primary">Add</button>
-        
-      </form>
-
-    {% if game_journal.notes %}
-    {% for n in game_journal.notes %}
-    <p> - {{n.note}} </p>
-        <form>
-        <button formaction="/playing/{{n.playing_id}}/{{n.id}}/edit" class="badge badge-secondary" formmethod="GET">Edit Note</button>
-        <button formaction="/playing/{{n.playing_id}}/{{n.id}}/delete" class="badge badge-danger" formmethod="POST">Delete Note</button>
-        </form> 
- 
-    {% endfor %}
-    {% else %}
-    <p>No notes on this game yet!</p>
-    {% endif %}
-   
-    <form method="POST">
-        {{ note_form.hidden_tag() }}
-        
-        {% for field in note_form if field.widget.input_type != 'hidden' %}
-          {% for error in field.errors %}
-            <span class="text-danger">{{ error }}</span>
-          {% endfor %}
           {{ field.label }}
           {{ field(placeholder=field.label.text, class="form-control") }}
         {% endfor %}
+        <div  class="mt-2">
+        <button class="btn btn-primary">Add</button>
+        <small class="text-secondary" id="hide-btn">[ Hide ]</small>
+      </form>
+      </div>
+    </div>
+<hr>
+<h4>Add a note to the journal</h4>
+<form method="POST">
+  {{ note_form.hidden_tag() }}
   
-        <button class="btn btn-primary">Add a Note</button>
-    </form>
+  {% for field in note_form if field.widget.input_type != 'hidden' %}
+    {% for error in field.errors %}
+      <span class="text-danger">{{ error }}</span>
+    {% endfor %}
+    {{ field(placeholder=field.label.text, class="form-control") }}
+  {% endfor %}
+  <div  class="mt-2">
+  <button class="btn btn-primary">Add a Note</button>
+</div>
+</form>
+<hr>
+    {% if game_journal.notes %}
+    <h4>Notes:</h4>
+    {% for n in game_journal.notes %}
+    <p>
+      <ul class="list-group">
+        <li class="list-group-item">{{n.note}}  
+        <form>
+        <button formaction="/playing/{{n.playing_id}}/{{n.id}}/edit" class="badge badge-secondary" formmethod="GET">Edit Note</button>
+        <button formaction="/playing/{{n.playing_id}}/{{n.id}}/delete" class="badge badge-danger" formmethod="POST">Delete Note</button>
+        </form>
+      </li>
+      </ul>
+     </p>
+       
+ 
+    {% endfor %}
+    {% else %}
+    <p>
+      <ul class="list-group">
+      <li class="list-group-item">No notes on this game yet!</li>
+    </ul>
+  </p>
+    {% endif %}
 {% endblock %}
