@@ -1,7 +1,7 @@
 """Forms for Legend of Zelda - Progress Tracker & Gaming Reference App"""
 from tokenize import String
 from flask import Flask
-from wtforms import StringField, EmailField, PasswordField, TextAreaField, HiddenField, BooleanField
+from wtforms import StringField, EmailField, PasswordField, TextAreaField, HiddenField, BooleanField, URLField
 from wtforms.validators import InputRequired, Length, Email
 from flask_wtf import FlaskForm
 
@@ -30,8 +30,7 @@ class HiddenDetailsForm(FlaskForm):
     game_id = HiddenField("game id")
     game_title = HiddenField("game title")
 
-class HiddenUrlForm(FlaskForm):
-    """Hidden Fields for adding a guide to the journal"""
-
-    game_guide = HiddenField("game guide")
-
+class addTextGuideForm(FlaskForm):
+    """Add a link to a text based game guide from elsewhere"""
+    playing_id = HiddenField("playing_id")
+    game_guide = URLField("Paste text guide url here", validators=[InputRequired(message="Please enter a url")])

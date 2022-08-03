@@ -6,31 +6,49 @@
     <h2>Journal for: {{game_journal.game_title}}</h2>
     <p> 
     {% if game_journal.game_guide %}
-    <iframe id="ytplayer" type="text/html" width="640" height="360" src="{{game_journal.game_guide}}"></iframe><br>
-    <a href="/playing/find-a-game-guide/{{game_journal.id}}" class="text-secondary">Change Guide</a>
+      {% if "youtube.com" in game_journal.game_guide %}
+      <iframe id="ytplayer" type="text/html" width="640" height="360" src="{{game_journal.game_guide}}"></iframe>
+      {% else %}
+      <a href="{{game_journal.game_guide}}">{{game_journal.game_guide}}</a>
+      {% endif %}
+      <br>
+      <a href="/playing/find-a-game-guide/{{game_journal.id}}" class="text-secondary">Switch to New Video Guide</a>
     {% else %}
       <a href="/playing/find-a-game-guide/{{game_journal.id}}" class="btn btn-info">Find a YouTube Game Guide to Use</a>
     {% endif %}
   </p>
+    <button class="btn btn-outline-secondary" id="toggle-add-url">I want to bookmark a new text based guide</button>
+      <form method="POST" action="/add-guide-to-journal" class="hide" id="add-text-guide">
+        {{ guide_form.csrf_token() }}
+        {{ guide_form.playing_id(value=game_journal.id) }}
+        {% for field in guide_form if field.widget.input_type != 'hidden' %}
+          {% for error in field.errors %}
+            <span class="text-danger">{{ error }}</span>
+          {% endfor %}
+          {{ field(placeholder=field.label.text, class="form-control") }}
+        {% endfor %}
+  
+        <button class="btn btn-primary">Add</button>
+        
+      </form>
 
     {% if game_journal.notes %}
     {% for n in game_journal.notes %}
-    <p>
+    <p> - {{n.note}} </p>
         <form>
-            - {{n.note}}
         <button formaction="/playing/{{n.playing_id}}/{{n.id}}/edit" class="badge badge-secondary" formmethod="GET">Edit Note</button>
         <button formaction="/playing/{{n.playing_id}}/{{n.id}}/delete" class="badge badge-danger" formmethod="POST">Delete Note</button>
         </form> 
-    </p>
+ 
     {% endfor %}
     {% else %}
     <p>No notes on this game yet!</p>
     {% endif %}
    
     <form method="POST">
-        {{ form.hidden_tag() }}
+        {{ note_form.hidden_tag() }}
         
-        {% for field in form if field.widget.input_type != 'hidden' %}
+        {% for field in note_form if field.widget.input_type != 'hidden' %}
           {% for error in field.errors %}
             <span class="text-danger">{{ error }}</span>
           {% endfor %}

@@ -5,7 +5,7 @@ import requests
 from flask import Flask, jsonify, session, g, request, redirect, render_template, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-from forms import SignUpForm, LoginForm, NoteForm, HiddenDetailsForm, HiddenUrlForm
+from forms import SignUpForm, LoginForm, NoteForm, HiddenDetailsForm, addTextGuideForm
 from models import db, connect_db, User, Wishlist, Playing, Note
 
 from decouple import config
@@ -200,10 +200,11 @@ def show_playing_journal(playing_id):
     game_journal = Playing.query.get_or_404(playing_id)
     user_id = current_user.id
 
-    form = NoteForm()
+    note_form = NoteForm()
+    guide_form = addTextGuideForm()
 
-    if form.validate_on_submit():
-        note = Note(note=form.note.data,
+    if note_form.validate_on_submit():
+        note = Note(note=note_form.note.data,
                     user_id=user_id,
                     playing_id=playing_id,)
         
@@ -211,7 +212,7 @@ def show_playing_journal(playing_id):
         db.session.commit()
         redirect(f'/playing/{playing_id}')
 
-    return render_template('/games/in-play/playing-journal.html', game_journal=game_journal, form=form)
+    return render_template('/games/in-play/playing-journal.html', game_journal=game_journal, note_form=note_form, guide_form=guide_form)
 
 ### Category Views - Bosses, Dungeons, Items, Places ###
 
