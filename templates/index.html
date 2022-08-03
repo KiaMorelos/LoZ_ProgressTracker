@@ -8,10 +8,10 @@
 <div class="row">
 {% for game in games.data %}
 <div class="card" style="width: 18rem;margin:1%">
-    <img src="https://dummyimage.com/640x360/eee/aaa" class="card-img-top" alt="Artwork TBD">
     <div class="card-body">
       <h5 class="card-title">{{game.name}}</h5>
       <p class="card-text">Released: {{game.released_date}}</p>
+      <hr>
       <a href="{{ url_for('show_game_details', game_id=game.id) }}" class="btn btn-primary">View Details</a>
     </div>
   </div>

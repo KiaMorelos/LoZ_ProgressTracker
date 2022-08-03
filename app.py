@@ -226,7 +226,7 @@ def show_category_list(category):
         page_num = 0
 
     try:
-        resp = requests.get(f"{ZELDA_API_URL}/{category}", params={"limit": 26, "page": page_num })
+        resp = requests.get(f"{ZELDA_API_URL}/{category}", params={"limit": 20, "page": page_num })
         cat_data = resp.json()
     
     except:
@@ -242,10 +242,14 @@ def search_category_list(category):
     """Search for something in a category general list - bosses, dungeons, items, places"""
 
     search = request.args.get('q')
-
+    
+    if request.args.get('page'):
+        page_num = int(request.args.get('page'))
+    else:
+        page_num = 0
     
     try:
-        resp = requests.get(f"{ZELDA_API_URL}/{category}", params={"limit": 50, "name": f"{search.title()}" })
+        resp = requests.get(f"{ZELDA_API_URL}/{category}", params={"limit": 20, "name": f"{search.title()}", "page": page_num })
         
         cat_data = resp.json()
 
@@ -256,7 +260,7 @@ def search_category_list(category):
         return redirect(f'/games/{category}', error=error)
 
 
-    return render_template('games/categories/category.html', category=category, cat_data=cat_data)
+    return render_template('games/categories/category.html', category=category, cat_data=cat_data, search=search, page_num=page_num)
 
 
 @app.route('/games/<category>/details/<item_id>')
@@ -431,7 +435,7 @@ def serialize(playing):
 @app.route('/api/playing')
 @login_required
 def get_currently_playing_list():
-    """Get JSONIFIED playing list"""
+    """Get JSONIFIED playing list of the current user's games"""
 
     user_id = current_user.id
     playing_list = Playing.query.filter_by(user_id=user_id).all()

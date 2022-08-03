@@ -17,24 +17,44 @@
     <h1>{{category.capitalize()}} List</h1>
     <!--Used the boostrap pagination example here -->
   <nav aria-label="Page navigation, go forward and back">
-      <ul class="pagination justify-content-end">
-        <li class="page-item">
-          <a class="page-link" {% if page_num > 0 %}
-            href="/games/{{category}}?page={{page_num - 1}}"
-            {% endif %}> Previous</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="/games/{{category}}?page={{page_num + 1}}">Next</a>
-        </li>
-      </ul>
-    </nav>
+    <ul class="pagination justify-content-end">
+    <!--Start if results number more than 19-->
+  {% if cat_data.data | length > 19 %}
+      <!--Start if search is present-->
+      {% if search %}
+      <li class="page-item">
+        <a class="page-link" {% if page_num > 0 %}
+          href="/search/{{category}}?q={{search}}&page={{page_num - 1}}"
+          {% endif %}> Previous</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="/search/{{category}}?q={{search}}&page={{page_num + 1}}">Next</a>
+      </li>
+      {% else %}
+      <li class="page-item">
+        <a class="page-link" {% if page_num > 0 %}
+          href="/games/{{category}}?page={{page_num - 1}}"
+          {% endif %}> Previous</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="/games/{{category}}?page={{page_num + 1}}">Next</a>
+      </li>
+      {% endif %} 
+      <!--End of if search present-->  
+    {% else %}
+    <li class="page-item">
+      <a class="page-link" href="/games/{{category}}">End of Results. Back to main {{category.capitalize()}} page >></a>
+    </li>
+  </ul>
+    {% endif %}
+    <!--End of if results number more than 20 if block-->
+  </nav>
     <div class="row">
     {% for c in cat_data.data %}
-    <div class="card" style="width: 18rem;margin:1%">
-        <img src="https://dummyimage.com/640x360/eee/aaa" class="card-img-top" alt="Artwork TBD">
+    <div class="card" style="width: 18rem;margin:1%;">
         <div class="card-body">
         <h5 class="card-title">{{c.name}}</h5>
-        <p class="card-text">{{c.description}}</p>
+        <hr>
         <a href="{{ url_for('show_item_details', category=category, item_id=c.id)}}" class="btn btn-primary">View Details</a>
         </div>
     </div>
@@ -42,6 +62,7 @@
     
     {% else %}
     <h1>No results - Try a different search</h1>
+    <a class="page-link" href="/games/{{category}}">End of Results. Back to main {{category.capitalize()}} page >></a>
     </div>
     {% endif %}
    
@@ -53,10 +74,20 @@
 {% endblock %}
 
 {% block footer %}
-{% if cat_data.data %}
+{% if cat_data.data | length > 19 %}
 <!--Used the boostrap pagination example here -->
 <nav aria-label="Page navigation, go forward and back">
   <ul class="pagination justify-content-end">
+    {% if search %}
+    <li class="page-item">
+      <a class="page-link" {% if page_num > 0 %}
+        href="/search/{{category}}?q={{search}}&page={{page_num - 1}}"
+        {% endif %}> Previous</a>
+    </li>
+    <li class="page-item">
+      <a class="page-link" href="/search/{{category}}?q={{search}}&page={{page_num + 1}}">Next</a>
+    </li>
+    {% else %}
     <li class="page-item">
       <a class="page-link" {% if page_num > 0 %}
         href="/games/{{category}}?page={{page_num - 1}}"
@@ -65,6 +96,7 @@
     <li class="page-item">
       <a class="page-link" href="/games/{{category}}?page={{page_num + 1}}">Next</a>
     </li>
+    {% endif %}
   </ul>
 </nav>
 {% endif %}

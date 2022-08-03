@@ -92,7 +92,7 @@ class Playing(db.Model):
     game_id = db.Column(db.Text, nullable=False)
     game_title = db.Column(db.Text, nullable=False)
     game_guide = db.Column(db.Text, nullable=True)
-    # completed = db.Column(db.Boolean, nullable=False, default=False)
+    completed = db.Column(db.Boolean, nullable=False, default=False)
 
     notes = db.relationship('Note', backref="Playing", cascade="all, delete-orphan")
 
@@ -133,25 +133,25 @@ class Wishlist(db.Model):
 
 ###### Items and Dungeon Tables #####
 
-class ItemToFind(db.Model):
-    """Items the User Needs to Find or has Found"""
+# class ItemToFind(db.Model):
+#     """Items the User Needs to Find or has Found"""
 
-    __tablename__ = 'items_to_find'
+#     __tablename__ = 'items_to_find'
 
-    playing_id = db.Column(db.Integer, db.ForeignKey('playing.id'),  primary_key=True)
-    ## item id should could come from Zelda API
-    item_id = db.Column(db.Text, nullable=False)
-    found = db.Column(db.Boolean, default=False)
+#     playing_id = db.Column(db.Integer, db.ForeignKey('playing.id'),  primary_key=True)
+#     ## item id should could come from Zelda API
+#     item_id = db.Column(db.Text, nullable=False)
+#     found = db.Column(db.Boolean, default=False)
 
-class DungeonToComplete(db.Model):
-    """Dungeons the User needs to complete or has completed"""
+# class DungeonToComplete(db.Model):
+#     """Dungeons the User needs to complete or has completed"""
 
-    __tablename__ = 'dungeons_to_complete'
+#     __tablename__ = 'dungeons_to_complete'
 
-    playing_id = db.Column(db.Integer, db.ForeignKey('playing.id'),  primary_key=True)
-    ## dungeon id should could come from Zelda API
-    dungeon_id = db.Column(db.Text, nullable=False)
-    finished = db.Column(db.Boolean, default=False)
+#     playing_id = db.Column(db.Integer, db.ForeignKey('playing.id'),  primary_key=True)
+#     ## dungeon id should could come from Zelda API
+#     dungeon_id = db.Column(db.Text, nullable=False)
+#     finished = db.Column(db.Boolean, default=False)
 
 
 def connect_db(app):
