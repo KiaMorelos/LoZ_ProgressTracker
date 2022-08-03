@@ -15,7 +15,8 @@
 
     {% if cat_data.data %}
     <h1>{{category.capitalize()}} List</h1>
-    <nav aria-label="Page navigation example">
+    <!--Used the boostrap pagination example here -->
+  <nav aria-label="Page navigation, go forward and back">
       <ul class="pagination justify-content-end">
         <li class="page-item">
           <a class="page-link" {% if page_num > 0 %}
