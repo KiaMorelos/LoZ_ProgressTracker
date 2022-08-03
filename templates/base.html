@@ -39,10 +39,10 @@
                 Find Guides or Details about...
               </a>
               <div class="dropdown-menu">
-                <a class="dropdown-item" href="{{ url_for('show_category_list', category='bosses', page_num='1')}}">Bosses</a>
-                <a class="dropdown-item" href="{{ url_for('show_category_list', category='dungeons', page_num='1')}}">Dungeons</a>
-                <a class="dropdown-item" href="{{ url_for('show_category_list', category='items', page_num='1')}}">Items</a>
-                <a class="dropdown-item" href="{{ url_for('show_category_list', category='places', page_num='1')}}">Places</a>
+                <a class="dropdown-item" href="{{ url_for('show_category_list', category='bosses')}}">Bosses</a>
+                <a class="dropdown-item" href="{{ url_for('show_category_list', category='dungeons')}}">Dungeons</a>
+                <a class="dropdown-item" href="{{ url_for('show_category_list', category='items')}}">Items</a>
+                <a class="dropdown-item" href="{{ url_for('show_category_list', category='places')}}">Places</a>
               </div>
             </li>
       
@@ -58,6 +58,9 @@
       <div class="alert alert-{{ category }}">{{ message }}</div>
       {% endfor %}
       {% block content %} main content {% endblock%}</div>
+
+    {% block footer %}
+    {% endblock %}
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>

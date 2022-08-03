@@ -219,9 +219,14 @@ def show_playing_journal(playing_id):
 @login_required
 def show_category_list(category):
     """Show General List of Chosen Category"""
+    
+    if request.args.get('page'):
+        page_num = int(request.args.get('page'))
+    else:
+        page_num = 0
 
     try:
-        resp = requests.get(f"{ZELDA_API_URL}/{category}", params={"limit": 50 })
+        resp = requests.get(f"{ZELDA_API_URL}/{category}", params={"limit": 26, "page": page_num })
         cat_data = resp.json()
     
     except:
@@ -229,7 +234,7 @@ def show_category_list(category):
         flash(f'I AM ERROR. - Sorry something went wrong while retrieving a list for {category}. Please try again later', 'warning')
         return render_template('games/categories/category.html', error=error)
 
-    return render_template('games/categories/category.html', category=category, cat_data=cat_data)
+    return render_template('games/categories/category.html', category=category, cat_data=cat_data, page_num=page_num)
 
 @app.route('/search/<category>')
 @login_required
