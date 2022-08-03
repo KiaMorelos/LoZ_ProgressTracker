@@ -202,6 +202,7 @@ def show_playing_journal(playing_id):
 
     note_form = NoteForm()
     guide_form = addTextGuideForm()
+    notes = Note.query.order_by(Note.date_time.desc()).filter_by(user_id=user_id).all()
 
     if note_form.validate_on_submit():
         note = Note(note=note_form.note.data,
@@ -212,7 +213,7 @@ def show_playing_journal(playing_id):
         db.session.commit()
         redirect(f'/playing/{playing_id}')
 
-    return render_template('/games/in-play/playing-journal.html', game_journal=game_journal, note_form=note_form, guide_form=guide_form)
+    return render_template('/games/in-play/playing-journal.html', game_journal=game_journal, note_form=note_form, guide_form=guide_form, notes=notes)
 
 ### Category Views - Bosses, Dungeons, Items, Places ###
 
