@@ -5,18 +5,22 @@
 
     <h2>{{current_user.username}}'s Playing Now List</h2>
     {% if playing_list %}
-    <ul>
+    <ul class="list-group">
     {% for game in playing_list %}
-    <li>
+    <li class="list-group-item">
     <form>
-
-        {{game.game_title}} <button formaction="/playing/{{game.id}}" class="badge badge-secondary" formmethod="GET">Edit Game Journal</button>
+        {% if game.completed %}
+        <span class="text-success" style="font-weight:900">Finished!</span> | 
+        {% endif %}
+        {{game.game_title}}
+        
+        <button formaction="/playing/{{game.id}}" class="badge badge-secondary" formmethod="GET">Edit Game Journal</button>
         <button formaction="/playing/{{game.id}}/delete" class="badge badge-danger" formmethod="POST">Delete</button>
     </form>
     </li>
     {% endfor%}
     {% else %}
-    <li>No games currently in play</li>
+    <li class="list-group-item">No games currently in play</li>
     </ul>
     {% endif %}
 {% endblock %}

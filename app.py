@@ -370,6 +370,25 @@ def find_game_theory(item_name):
 
 
 ###Delete and Edit Routes for Lists, Gaming Notes
+
+@app.route('/finished-game/<playing_id>', methods=['POST'])
+@login_required
+def finish_game(playing_id):
+    
+    p = Playing.query.get_or_404(playing_id)
+    
+    p.completed = request.form['completed']
+    
+    if p.completed == 'True':
+        p.completed = True
+    else:
+        p.completed = False
+
+    db.session.add(p)
+    db.session.commit()
+
+    return redirect('/playing')
+
 @app.route('/playing/<int:playing_id>/delete', methods=['POST'])
 @login_required
 def delete_game_in_play(playing_id):

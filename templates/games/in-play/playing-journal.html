@@ -4,6 +4,17 @@
 {% block content %}
 
     <h2>Journal for: {{game_journal.game_title}}</h2>
+    
+    <form id="finished-game" action="/finished-game/{{game_journal.id}}" method="POST">
+      {% if not game_journal.completed %}
+      <label>Finished with this game?</label>
+      <input type="checkbox" name="completed" onChange="this.form.submit()" value="True">
+      {% else %}
+      <label>Not finished with this game?</label>
+      <input type="checkbox" name="completed" onChange="this.form.submit()" value="False">
+     {% endif %}
+    </form>
+
     {% if game_journal.game_guide %}
       {% if "youtube.com" in game_journal.game_guide %}
       <iframe id="ytplayer" type="text/html" width="640" height="360" src="{{game_journal.game_guide}}"></iframe>

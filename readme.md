@@ -5,7 +5,6 @@
 
 ## Features I still need to add:
 
-- A way to mark games as played
 - Tests
 - Improved Styles
 
