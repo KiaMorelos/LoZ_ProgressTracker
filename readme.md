@@ -6,7 +6,6 @@
 ## Features I still need to add:
 
 - A way to mark games as played
-- A place to add items/dungeons to the journal...Though, I think now that maybe the note pad itself is probably a more user friendly solution.
 - Tests
 - Improved Styles
 
