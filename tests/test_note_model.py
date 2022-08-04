@@ -3,9 +3,9 @@ from unittest import TestCase
 
 from models import db, User, Playing, Note
 
-os.environ['DATABASE_URL'] = "postgresql:///zelda_tracker_test"
-
 from app import app
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///zelda_tracker_test'
+
 
 db.create_all()
 

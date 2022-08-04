@@ -7,6 +7,8 @@
     <title>{% block title %} Title {% endblock %}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{url_for('static', filename='main.css')}}">
+    <!--Favicon Image by <a href="https://pixabay.com/users/pakulurus-24301987/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=6874293">Paku lurus</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=6874293">Pixabay</a>-->
+    <link rel="shortcut icon" type="image/x-icon" href="{{url_for('static', filename='favicon.ico')}}">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-success">
