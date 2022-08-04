@@ -73,14 +73,6 @@ class User(UserMixin, db.Model):
         return False
 
 
-# class Credential(db.Model):
-#     """Credentials Model for users"""
-    
-#     __tablename__ = 'credentials'
-
-#     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-#     password = db.Column(db.Text, nullable=False)
-
 class Playing(db.Model):
     """Games the User is currently playing"""
 
@@ -118,40 +110,6 @@ class Wishlist(db.Model):
     ## game id and title info will come from the Zelda API
     game_id = db.Column(db.Text, nullable=False)
     game_title = db.Column(db.Text, nullable=False)
-
-
-#### Has played this game before Table? ###
-### this table isn't quite right yet!! ###
-# class Played(db.Model):
-#     """Has the user played this game before?"""
-
-#     __tablename__ = 'played'
-
-#     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-#     game_id = db.Column(db.Text, nullable=False)
-#     completed = db.Column(db.Boolean, nullable=False, default=False)
-
-###### Items and Dungeon Tables #####
-
-# class ItemToFind(db.Model):
-#     """Items the User Needs to Find or has Found"""
-
-#     __tablename__ = 'items_to_find'
-
-#     playing_id = db.Column(db.Integer, db.ForeignKey('playing.id'),  primary_key=True)
-#     ## item id should could come from Zelda API
-#     item_id = db.Column(db.Text, nullable=False)
-#     found = db.Column(db.Boolean, default=False)
-
-# class DungeonToComplete(db.Model):
-#     """Dungeons the User needs to complete or has completed"""
-
-#     __tablename__ = 'dungeons_to_complete'
-
-#     playing_id = db.Column(db.Integer, db.ForeignKey('playing.id'),  primary_key=True)
-#     ## dungeon id should could come from Zelda API
-#     dungeon_id = db.Column(db.Text, nullable=False)
-#     finished = db.Column(db.Boolean, default=False)
 
 
 def connect_db(app):
