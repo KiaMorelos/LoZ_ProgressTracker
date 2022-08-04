@@ -5,7 +5,6 @@
 
 ## Features I still need to add:
 
-- Tests
 - Improved Styles
 
 
