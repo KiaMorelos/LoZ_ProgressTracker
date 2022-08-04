@@ -5,17 +5,17 @@
 
     <h2>{{current_user.username}}'s Play Wishlist</h2>
     {% if wishlist %}
-    <ul>
+    <ul class="list-group">
     {% for game in wishlist %}
-    <li>
+    <li class="list-group-item">
         <form>
             <a href="{{ url_for('show_game_details', game_id=game.game_id)}}">{{game.game_title}}</a>  
-            <button formaction="/wishlist/{{game.id}}/delete" class="badge badge-danger" formmethod="POST">Delete</button>
+            <button formaction="/wishlist/{{game.id}}/delete" class="badge badge-danger" formmethod="POST">Remove</button>
         </form>
     </li>
     {% endfor%}
     {% else %}
-    <li>No games currently on wishlist</li>
+    <li class="list-group-item">No games currently on wishlist</li>
     </ul>
     {% endif %}
 {% endblock %}

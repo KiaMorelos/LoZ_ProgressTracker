@@ -11,12 +11,13 @@
         {% for error in field.errors %}
           <span class="text-danger">{{ error }}</span>
         {% endfor %}
+        <div class="form-group">
+        {{field.label}}
         {{ field(placeholder=field.label.text, class="form-control") }}
+      </div>
       {% endfor %}
 
-      <button class="btn btn-primary btn-lg btn-block">Login</button>
+      <button class="btn btn-primary btn-lg">Login</button>
     </form>
-  </div>
-</div>
 
 {% endblock %}

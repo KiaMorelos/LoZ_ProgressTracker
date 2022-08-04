@@ -6,17 +6,15 @@
     <h2>Sign up and keep track of your gaming progress.</h2>
     <form method="POST">
       {{ form.hidden_tag() }}
-
       {% for field in form if field.widget.input_type != 'hidden' %}
+      <div class="form-group">
         {% for error in field.errors %}
           <span class="text-danger">{{ error }}</span>
         {% endfor %}
+        {{field.label}}
         {{ field(placeholder=field.label.text, class="form-control") }}
+      </div>
       {% endfor %}
-
-      <button class="btn btn-primary btn-lg btn-block">Create Account</button>
+      <button class="btn btn-primary btn-lg">Create Account</button>
     </form>
-  </div>
-</div>
-
 {% endblock %}
