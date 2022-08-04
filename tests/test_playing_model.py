@@ -10,7 +10,7 @@ from app import app
 db.create_all()
 
 class PlayingModelTest(TestCase):
-    """Tests for User Model"""
+    """Tests for Playing Model"""
 
     def setUp(self):
         """Create a test user, and test client"""
