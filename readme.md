@@ -1,12 +1,7 @@
 # Legend of Zelda - Progress Tracker & Gaming Reference
 
 ## Schema
-- A new schema diagram is coming soon.
-
-## Features I still need to add:
-
-- Improved Styles
-
+![jpg of schema](static/images/LoZ_Progress_Schema.jpg)
 
 ## API's
 
