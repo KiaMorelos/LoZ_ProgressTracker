@@ -4,15 +4,28 @@
 
 {% block content %}
 {% if not error %}
-<h1>Games List</h1>
+  {% if not current_user.is_authenticated %}
+  <div class="jumbotron controller-jpg">
+    <h1 class="display-4">Keep track of your gaming progress!</h1>
+    <p class="lead">Find video walk throughs of full games, or video guides for one Zelda dungeon, boss, place, or item at a time. Take notes and never forget where you left off in a Zelda game again.</p>
+    <p class="lead">You can also peruse game theory videos from popular Zelda YouTubers.</p>
+    <hr class="my-4">
+      <p></p>
+    <a class="btn btn-success btn-lg" href="/signup" role="button">Sign Up</a>
+  </div>
+  {% endif %}
+<h1>All Games</h1>
+<hr>
 <div class="row">
 {% for game in games.data %}
-<div class="card" style="width: 18rem;margin:1%">
-    <div class="card-body">
+<div class="card" style="width: 18rem;margin:1%;border:none;">
+    <div class="card-body grey-cartridge">
+      <div class="sticker">
       <h5 class="card-title">{{game.name}}</h5>
       <p class="card-text">Released: {{game.released_date}}</p>
+      </div>
       <hr>
-      <a href="{{ url_for('show_game_details', game_id=game.id) }}" class="btn btn-primary">View Details</a>
+      <a href="{{ url_for('show_game_details', game_id=game.id) }}" class="btn btn-light">View Details</a>
     </div>
   </div>
 {% endfor %}

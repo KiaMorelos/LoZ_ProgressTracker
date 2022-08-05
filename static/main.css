@@ -1,3 +1,35 @@
 .hide {
     display: none;
 }
+
+.grey-cartridge {
+    background-color: #555;
+    border-radius:10px 10px 0px 5px;
+    padding: 20px;
+    box-shadow: 5px 10px #555;
+}   
+
+.sticker {
+    background-color: #fff;
+    padding:5%;
+    background-image: url("images/master-sword-15percent.jpg");
+    
+    /* Image by <a href="https://pixabay.com/users/ricinator-3282802/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2002961">Ricarda Mölck</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2002961">Pixabay</a> */
+
+    background-position: right;
+    background-size:40%;
+    background-repeat:no-repeat;
+    border-radius: 5px;
+}
+
+hr {
+    background-color: #eee;
+}
+
+.controller-jpg {
+    background-image: url("images/controller-10percent.png");
+    /* Image by <a href="https://pixabay.com/users/io-images-1096650/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1784573">Stephan</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1784573">Pixabay</a> */
+    background-position: right;
+    background-size:70%;
+    background-repeat:no-repeat;
+}

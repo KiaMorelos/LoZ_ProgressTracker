@@ -20,7 +20,7 @@
           {% endfor %}
           {{ field(placeholder=field.label.text, class="form-control") }}
         {% endfor %}
-    <button class="btn btn-link">Add to Play Wishlist</button>
+    <button class="btn btn-outline-secondary m-1">Add to Play Wishlist</button>
     </form>
 
     <form method="POST" action="/add-to-playing-list">
@@ -32,9 +32,9 @@
           {% endfor %}
           {{ field(placeholder=field.label.text, class="form-control") }}
         {% endfor %}
-        <button class="btn btn-success">Add to playing list</button>
+        <button class="btn btn-success  m-1">Add to playing list</button>
     </form>
-    <a href="{{url_for('find_game_theory', item_name=game.name)}}" class="btn btn-dark">Find a Game Theory Video About -  {{game.name}}</a>
+    <a href="{{url_for('find_game_theory', item_name=game.name)}}" class="btn btn-dark  m-1">Find a Game Theory Video About -  {{game.name}}</a>
          
   </div>
     {% endif %}
