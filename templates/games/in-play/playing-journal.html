@@ -10,7 +10,7 @@
       <label>Finished with this game?</label>
       <input type="checkbox" name="completed" onChange="this.form.submit()" value="True">
       {% else %}
-      <label>Not finished with this game?</label>
+      <label><span class="text-success" style="font-weight:900">Finished!</span> | Unmark as finished?</label>
       <input type="checkbox" name="completed" onChange="this.form.submit()" value="False">
      {% endif %}
     </form>
@@ -63,20 +63,19 @@
 <hr>
     {% if game_journal.notes %}
     <h4>Notes:</h4>
+    <ul class="list-group" id="notes-list">
+
     {% for n in notes %}
-    <p>
-      <ul class="list-group">
+
         <li class="list-group-item">{{n.note}}  
         <form>
         <button formaction="/playing/{{n.playing_id}}/{{n.id}}/edit" class="badge badge-secondary" formmethod="GET">Edit Note</button>
         <button formaction="/playing/{{n.playing_id}}/{{n.id}}/delete" class="badge badge-danger" formmethod="POST">Delete Note</button>
         </form>
       </li>
-      </ul>
-     </p>
-       
- 
     {% endfor %}
+  </ul>
+
     {% else %}
     <p>
       <ul class="list-group">

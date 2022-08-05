@@ -211,7 +211,7 @@ def show_playing_journal(playing_id):
         
         db.session.add(note)
         db.session.commit()
-        redirect(f'/playing/{playing_id}')
+        return redirect(f'/playing/{playing_id}')
 
     return render_template('/games/in-play/playing-journal.html', game_journal=game_journal, note_form=note_form, guide_form=guide_form, notes=notes)
 
@@ -381,11 +381,13 @@ def finish_game(playing_id):
     
     if p.completed == 'True':
         p.completed = True
+        db.session.add(p)
+        db.session.commit()
     else:
         p.completed = False
-
-    db.session.add(p)
-    db.session.commit()
+        db.session.add(p)
+        db.session.commit()
+        return redirect(f'/playing/{playing_id}')
 
     return redirect('/playing')
 
