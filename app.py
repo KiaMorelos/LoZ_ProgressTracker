@@ -1,8 +1,6 @@
-from json import load
-from pydoc import render_doc
 import requests
 
-from flask import Flask, jsonify, session, g, request, redirect, render_template, flash
+from flask import Flask, jsonify, request, redirect, render_template, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from forms import SignUpForm, LoginForm, NoteForm, HiddenDetailsForm, addTextGuideForm

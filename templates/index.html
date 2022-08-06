@@ -15,7 +15,7 @@
   </div>
   {% endif %}
 <h1>All Games</h1>
-  {% if not current_user.playing %}
+  {% if not current_user.playing and current_user.is_authenicated %}
   <p class="lead">
     Click view details on any game to get started.
   </p>

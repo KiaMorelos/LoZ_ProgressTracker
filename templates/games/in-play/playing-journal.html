@@ -30,7 +30,9 @@
     <button class="btn btn-outline-secondary" id="toggle-add-url-on">I want to bookmark a new text based guide</button>
     <div class="mt-4">
       <form method="POST" action="/add-guide-to-journal" class="hide" id="add-text-guide">
+        {% if 'csrf_token' in guide_form %}
         {{ guide_form.csrf_token() }}
+        {% endif %}
         {{ guide_form.playing_id(value=game_journal.id) }}
         {% for field in guide_form if field.widget.input_type != 'hidden' %}
           {% for error in field.errors %}

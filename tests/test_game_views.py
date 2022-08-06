@@ -16,6 +16,8 @@ db.create_all()
 
 app.config['WTF_CSRF_ENABLED'] = False
 
+app.config["TESTING"] = True
+
 class GameViewsTest(TestCase):
     """Tests for Game Views Public/Private"""
 
@@ -24,28 +26,31 @@ class GameViewsTest(TestCase):
         db.drop_all()
         db.create_all()
 
-        user = User.signup("James Dean", "jimmydean", "test@imagine.com", "password")
-        user.id = 900
+        self.public_client = app.test_client()
+        self.request_ctx = app.test_request_context
 
-        game = Playing(
-            user_id= 900,
-            game_id = "100", 
-            game_title = "The Legend of Zelda",
-            game_guide = "https://www.youtube.com/watch?v=9FigC7REkco",
-            completed = True
-            )
-        
-        game.id = 800
+        with self.request_ctx():
+            user = User.signup("James Dean", "jimmydean", "test@imagine.com", "password")
+            user.id = 900
 
-        db.session.add(user)
-        db.session.add(game)
-        
-        db.session.commit()
+            game = Playing(
+                user_id= 900,
+                game_id = "100", 
+                game_title = "The Legend of Zelda",
+                game_guide = "https://www.youtube.com/watch?v=9FigC7REkco",
+                completed = True
+                )
+            
+            game.id = 800
+
+            db.session.add(user)
+            db.session.add(game)
+            
+            db.session.commit()
         
         self.user = user
         self.game = game
 
-        self.public_client = app.test_client()
 
     def tearDown(self):
         db.session.rollback()
@@ -70,6 +75,7 @@ class GameViewsTest(TestCase):
             self.assertEqual(resp.status_code, 200)
             content = resp.get_data(as_text=True)
             self.assertIn("Keep track of your gaming progress!", content)
+            self.assertNotIn("Click view details on any game to get started.", content)
             self.assertIn("Sign Up", content)
 
     def test_wishlist_view(self):
@@ -107,5 +113,17 @@ class GameViewsTest(TestCase):
                 self.assertIn("Please log in to access this page.", content)
 
 
-    
-            
+    def test_playing_journal_view(self):
+        """Test Playing/Game Journal View as logged in user"""
+       
+        user = User.query.get(900)
+        game = Playing.query.get(800)
+
+        with app.test_client(user=user) as client:
+                resp = client.get(f"/playing/{game.id}")
+                self.assertEqual(resp.status_code, 200)
+                content = resp.get_data(as_text=True)
+                self.assertIn('Add a note to the journal', content)
+                self.assertIn('Journal for: The Legend of Zelda', content)
+
+
