@@ -77,6 +77,7 @@ class GameViewsTest(TestCase):
             self.assertIn("Keep track of your gaming progress!", content)
             self.assertNotIn("Click view details on any game to get started.", content)
             self.assertIn("Sign Up", content)
+            self.assertFalse(current_user.is_authenticated)
 
     def test_wishlist_view(self):
         """Test Wishlist View as logged in user"""
@@ -103,8 +104,6 @@ class GameViewsTest(TestCase):
 
     def test_playing_journal_view_unauthorized(self):
         """Test Playing/Game Journal View as not logged in user"""
-       
-        user = User.query.get(900)
 
         with self.public_client as c:
                 resp = c.get(f"/playing/800", follow_redirects=True)
@@ -126,4 +125,49 @@ class GameViewsTest(TestCase):
                 self.assertIn('Add a note to the journal', content)
                 self.assertIn('Journal for: The Legend of Zelda', content)
 
+    def test_game_details_view_fail(self):
+        """Test game details view - invalid"""
+
+        with self.public_client as c:
+                resp = c.get(f"/games/game-details/100", follow_redirects=True)
+                content = resp.get_data(as_text=True)
+                self.assertEqual(resp.status_code, 200)
+                self.assertIn('No results found', content)
+
+    def test_game_details_view_success(self):
+        """Test game details view - valid id in zelda api"""
+
+        with self.public_client as c:
+                resp = c.get(f"/games/game-details/5f6ce9d805615a85623ec2b8", follow_redirects=True)
+                content = resp.get_data(as_text=True)
+                self.assertEqual(resp.status_code, 200)
+                self.assertIn('The Legend of Zelda', content)
+
+
+    def test_add_game_to_playing_list(self):
+        """Test adding game to playing now list"""
+        
+        user = User.query.get(900)
+        with app.test_client(user=user) as client:
+
+                resp = client.post(f"/add-to-playing-list", data={"user_id": "900", "game_id": "5f6ce9d805615a85623ec2b8", "game_title":"The Legend of Zelda: A Link to the Past" }, follow_redirects=True)
+                self.assertEqual(resp.status_code, 200)
+                content = resp.get_data(as_text=True)
+                self.assertIn('A Link to the Past', content)
+
+    def test_add_game_to_wishlist(self):
+        """Test adding game to wishlist"""
+        
+        user = User.query.get(900)
+        with app.test_client(user=user) as client:
+
+                resp = client.post(f"/add-to-wishlist", data={"user_id": "900", "game_id": "5f6ce9d805615a85623ec2b8", "game_title":"The Legend of Zelda: A Link to the Past" }, follow_redirects=True)
+                self.assertEqual(resp.status_code, 200)
+                content = resp.get_data(as_text=True)
+                self.assertIn('A Link to the Past', content)
+
+
+                
+                
+        
 

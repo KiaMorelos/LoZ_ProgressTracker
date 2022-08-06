@@ -67,6 +67,35 @@ class GameViewsTest(TestCase):
             content = resp.get_data(as_text=True)
             self.assertNotIn("Bosses List", content)
             self.assertNotIn("View Details", content)
+            self.assertFalse(current_user.is_authenticated)
             self.assertIn("Please log in to access this page.", content)
+
+    def test_category_detail_view(self):
+        """Test Category item details View as logged in user"""
+       
+        user = User.query.get(900)
+        
+        with app.test_client(user=user) as client:
+            resp = client.get("/games/bosses/details/5f6e93a7cbf4202fbde225c0")
+            self.assertEqual(resp.status_code, 200)
+            content = resp.get_data(as_text=True)
+            self.assertIn("Ganon", content)
+            self.assertIn("Find a Guide", content)
+            self.assertIn("Find a Game Theory", content)
+
+    def test_category_detail_view_failed(self):
+        """Test Category item details failed View as logged in user"""
+       
+        user = User.query.get(900)
+        
+        with app.test_client(user=user) as client:
+            resp = client.get("/games/bosses/details/100")
+            self.assertEqual(resp.status_code, 200)
+            content = resp.get_data(as_text=True)
+            self.assertIn("I AM ERROR", content)
+            self.assertIn("No results", content)
+           
+
+
 
 
