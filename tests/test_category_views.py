@@ -18,8 +18,8 @@ app.config['WTF_CSRF_ENABLED'] = False
 
 app.config["TESTING"] = True
 
-class GameViewsTest(TestCase):
-    """Tests for Game Views Public/Private"""
+class CategoryViewsTest(TestCase):
+    """Tests for Category Views Public/Private"""
 
     def setUp(self):
         """Create a test user, and test client"""
