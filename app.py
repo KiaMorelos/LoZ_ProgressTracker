@@ -1,3 +1,4 @@
+import os
 import requests
 
 from flask import Flask, jsonify, request, redirect, render_template, flash
@@ -8,8 +9,7 @@ from models import db, connect_db, User, Wishlist, Playing, Note
 
 from decouple import config
 
-YOUTUBE_API_KEY = config('YOUTUBE_API_KEY')
-APP_SECRET_KEY = config('APP_SECRET_KEY')
+YOUTUBE_API_KEY = os.environ.get("YOUTUBE_API_KEY")
 
 YOUTUBE_API_URL = f"https://www.googleapis.com/youtube/v3/search?key={YOUTUBE_API_KEY}"
 
@@ -18,10 +18,9 @@ ZELDA_API_URL = "https://zelda.fanapis.com/api"
 YOUTUBE_EMBED_URL = "https://www.youtube.com/embed/"
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = f"{APP_SECRET_KEY}"
-debug = DebugToolbarExtension(app)
+app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY", "itsasecrettoeverybody" )
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///zelda_tracker'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql:///zelda_tracker')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 
