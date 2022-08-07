@@ -14,7 +14,7 @@ Users can also peruse imaginative games theories (regarding games, dungeons, bos
 
 - Play Journal / Game Journal 
     - Users can start a journal for any game.
-    - The journal has a place to add notes, bookmark a video or text guide, mark games as finished. Bookmarked video guides can be played here, so players do not have to leave the page, but can takes notes as they go along.
+    - The journal has a place to add notes, bookmark a video or text guide, mark games as finished. Bookmarked video guides can be played here, so players do not have to leave the page, but can take notes as they go along.
 
 - Find guides based on the game title, or get more specific.
     - Players can search the provided lists (Bosses, Dungeons, Items, Places) and find guides related to the part of the game they need a guide for and add these to the desired play journal.
