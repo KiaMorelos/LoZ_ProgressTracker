@@ -203,7 +203,7 @@ def show_playing_journal(playing_id):
 
     note_form = NoteForm()
     guide_form = addTextGuideForm()
-    notes = Note.query.order_by(Note.date_time.desc()).filter_by(user_id=user_id).all()
+    notes = Note.query.order_by(Note.date_time.desc()).filter_by(playing_id=playing_id).all()
 
     if note_form.validate_on_submit():
         note = Note(note=note_form.note.data,
